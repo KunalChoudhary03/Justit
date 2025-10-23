@@ -1,7 +1,8 @@
 import AddToCart from '../Pages/AddToCart'
 import { useDispatch } from 'react-redux'
-import { rmvAll } from '../redux/Slice'
+import { rmvAll } from '../redux/Slices/Slice'
 import { Link } from 'react-router-dom'
+import Profile from '../Components/Profile'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -23,6 +24,7 @@ const Header = () => {
           Clear Cart
         </button>
         <AddToCart />
+        <Profile />
       </div>
     </nav>
   )

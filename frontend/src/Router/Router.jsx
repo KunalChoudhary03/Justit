@@ -4,6 +4,8 @@ import About from '../Pages/About'
 import Contact from '../Pages/Contact'
 import Service from '../Pages/Service'
 import Product from '../Pages/Product'
+import Register from '../Pages/Register'
+import Login from '../Pages/Login'
 
 const Router = () => {
   return (
@@ -12,6 +14,9 @@ const Router = () => {
         <Route path="/about" element={<About />}/>
         <Route path="/contact" element={<Contact />}/>
         <Route path="/service" element={<Service />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/login" element={<Login />}/>
+        
      </Routes>
   )
 }
