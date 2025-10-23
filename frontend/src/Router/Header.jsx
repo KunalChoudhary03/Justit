@@ -1,4 +1,4 @@
-import AddToCart from '../Pages/AddToCArt'
+import AddToCart from '../Pages/AddToCart'
 import { useDispatch } from 'react-redux'
 import { rmvAll } from '../redux/Slice'
 import { Link } from 'react-router-dom'
