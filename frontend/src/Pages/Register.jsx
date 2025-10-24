@@ -1,81 +1,87 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../redux/Thunk/AuthThunk";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../redux/Thunk/AuthThunk';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const [data, setData] = useState({ name: "", email: "", password: "" });
+  const [registerError, setregisterError] = useState()
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.auth);
-
-  const [userData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
 
   const handleChange = (e) => {
-    setFormData({ ...userData, [e.target.name]: e.target.value });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(userData));
-    navigate("/login"); // redirect after register
+    try{
+    await  dispatch(registerUser(data)).unwrap();
+    navigate('/');
+    }catch(error){
+      setregisterError(error?.message || "User Already Exists");
+    }
+    
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-          Create Account
-        </h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Create Account</h2>
 
-        {status === "loading" && (
-          <p className="text-center text-gray-600 mb-3">Registering...</p>
-        )}
-        {status === "failed" && (
-          <p className="text-center text-red-500 mb-3">{error}</p>
-        )}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            {registerError && <p className='text-red-400'>{registerError}</p>}
+            <label className="block text-gray-700 font-medium mb-1">Name</label>
+            <input
+              name="name"
+              onChange={handleChange}
+              value={data.name}
+              type="text"
+              placeholder="Enter your name"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={userData.email}
-            onChange={handleChange}
-            required
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={userData.password}
-            onChange={handleChange}
-            required
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-          />
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Email</label>
+            <input
+              name="email"
+              onChange={handleChange}
+              value={data.email}
+              type="email"
+              placeholder="Enter your email"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Password</label>
+            <input
+              name="password"
+              onChange={handleChange}
+              value={data.password}
+              type="password"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
 
           <button
             type="submit"
-            disabled={status === "loading"}
-            className={`bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition ${
-              status === "loading" && "opacity-70 cursor-not-allowed"
-            }`}
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
           >
-            {status === "loading" ? "Registering..." : "Register"}
+            Register
           </button>
         </form>
 
-        <p className="mt-4 text-center text-gray-600">
+        <p className="text-center text-gray-600 mt-4">
           Already have an account?{" "}
           <span
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/login')}
             className="text-blue-600 font-semibold cursor-pointer hover:underline"
           >
-            Login here
+            Login
           </span>
         </p>
       </div>

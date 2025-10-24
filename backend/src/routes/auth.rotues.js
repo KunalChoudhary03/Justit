@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 router.post('/register',async(req,res)=>{
   try{
-  const{email,password} = req.body
+  const{name,email,password} = req.body
   const existingUser = await userModel.findOne({email})
   if(existingUser){
     return res.status(400).json({
@@ -17,13 +17,14 @@ router.post('/register',async(req,res)=>{
  const hashPassword = await bcrypt.hash(password,10)
 
   const user  =  await userModel.create({
+    name,
     email,
     password:hashPassword
   })
   
   res.status(201).json({
    message:"user created successfully",
-   user:{ id: user._id, email: user.email}
+   user:{ id: user._id,name:user.name, email: user.email}
   })
 }
 catch(error){

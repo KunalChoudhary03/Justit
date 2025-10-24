@@ -1,105 +1,78 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser, logoutUser } from "../redux/Thunk/AuthThunk";
-import { resetAuth } from "../redux/Slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../redux/Thunk/AuthThunk';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, status, error } = useSelector((state) => state.auth);
+  const [error, setError] = useState(null);
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
 
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const handleChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
 
-  const handleChange = (e) =>
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-
-  const handleLogin = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(credentials));
-    navigate("/");
+    setError(null);
+    try {
+      await dispatch(loginUser(loginData)).unwrap();
+      navigate('/');
+    } catch (err) {
+      setError(err?.message || "Invalid Email or Password");
+    }
   };
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    dispatch(resetAuth());
-    setCredentials({ email: "", password: "" });
-  };
-
-  // ✅ If user logged in
-  if (user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <div className="bg-white shadow-lg rounded-2xl p-8 w-[90%] sm:w-[400px] text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Welcome, {user.name}
-          </h2>
-          <button
-            onClick={handleLogout}
-            className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // ✅ Login Form
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-[90%] sm:w-[400px]">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Login
-        </h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Login</h2>
 
-        {status === "loading" && (
-          <p className="text-blue-500 text-center mb-3">Logging in...</p>
-        )}
-        {status === "failed" && (
-          <p className="text-red-500 text-center mb-3">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Email</label>
+            <label htmlFor="email" className="block text-gray-700 font-medium mb-1">Email</label>
             <input
-              type="email"
+              id="email"
               name="email"
-              placeholder="Enter your email"
-              value={credentials.email}
+              type="email"
+              value={loginData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              placeholder="Enter your email"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Password</label>
+            <label htmlFor="password" className="block text-gray-700 font-medium mb-1">Password</label>
             <input
-              type="password"
+              id="password"
               name="password"
-              placeholder="Enter your password"
-              value={credentials.password}
+              type="password"
+              value={loginData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-all"
           >
             Login
           </button>
         </form>
 
-        <p className="text-sm text-center text-gray-600 mt-4">
-          Don’t have an account?{" "}
+        <p className="text-center text-gray-600 mt-4">
+          Don't have an account?{" "}
           <span
-            onClick={() => navigate("/register")}
-            className="text-blue-600 hover:underline cursor-pointer"
+            className="text-blue-600 font-semibold cursor-pointer hover:underline"
+            onClick={() => navigate('/register')}
           >
             Register
           </span>
