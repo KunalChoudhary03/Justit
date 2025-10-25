@@ -18,7 +18,7 @@ reducers:{
         state.error = null;
     },
 },
-extraReducer: (builder)=>{
+  extraReducers: (builder)=>{
     builder
     .addCase(registerUser.pending, (state)=>{state.status= "loading"})
     .addCase(registerUser.fulfilled,(state,action)=>{
@@ -41,9 +41,9 @@ extraReducer: (builder)=>{
         state.error = action.payload || action.error.message
     })
     .addCase(logoutUser.fulfilled,(state)=>{
-        state.user = "idle";
+        state.user = null;
         state.token = null;
-        state.status = null;
+        state.status = "idle";
     })
 }
 })

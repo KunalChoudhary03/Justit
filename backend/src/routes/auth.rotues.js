@@ -24,8 +24,11 @@ router.post('/register',async(req,res)=>{
   
   res.status(201).json({
    message:"user created successfully",
-   user:{ id: user._id,name:user.name, email: user.email}
+   user:{ id: user._id,name:user.name, email: user.email},
+   token: jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET)
+   
   })
+  res.cookie("token",token);
 }
 catch(error){
   return res.status(500).json({
@@ -36,6 +39,24 @@ catch(error){
 })
 
 router.post("/login", async(req,res)=>{
+  const existingToken = req.cookies.token;
+  if (existingToken) {
+  try {
+    const decoded = jwt.verify(existingToken, process.env.JWT_SECRET);
+    const user = await userModel.findById(decoded.id).select("-password");
+    if (user) {
+      return res.status(200).json({ 
+        message: "User already logged in",
+        user: { id: user._id, email: user.email },
+        token: existingToken,
+        name:user.name
+      });
+    }
+  } catch (error) {
+    res.clearCookie("token");
+  }
+}
+
   const {email,password} = req.body;
   const user  = await userModel.findOne({email: email})
   if(!user){
@@ -54,11 +75,15 @@ router.post("/login", async(req,res)=>{
     id:user._id,
     email:user.email
   },process.env.JWT_SECRET)
-  res.cookie("token",token);
+ res.cookie("token", token,{
+  httpOnly: true,
+  secure: true,
+  sameSite: "strict",
+});
 
   res.status(200).json({
     message : "User logged in  successfully",
-    user:{id:user._id,email:user.email},
+    user:{id:user._id,email:user.email,name:user.name},
     token
   })
 })

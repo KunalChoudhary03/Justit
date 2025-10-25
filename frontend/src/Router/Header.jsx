@@ -2,13 +2,13 @@ import AddToCart from '../Pages/AddToCart'
 import { useDispatch } from 'react-redux'
 import { rmvAll } from '../redux/Slices/Slice'
 import { Link } from 'react-router-dom'
-import Profile from '../Components/Profile'
+import ProfileButton from '../Components/ProfileButton'
 
 const Header = () => {
   const dispatch = useDispatch()
 
   return (
-    <nav className="flex justify-between items-center top-0 sticky bg-blue-400 p-4 shadow-md text-white">
+    <nav className="flex justify-between items-center top-0 sticky bg-blue-400 p-4 shadow-md text-white z-20">
       <ul className="flex gap-8 text-xl font-medium">
          <li><Link to="/" className="hover:text-gray-200 transition">Home</Link></li>
          <li><Link to="/about" className="hover:text-gray-200 transition">About</Link></li>
@@ -24,7 +24,7 @@ const Header = () => {
           Clear Cart
         </button>
         <AddToCart />
-        <Profile />
+      <ProfileButton />
       </div>
     </nav>
   )
