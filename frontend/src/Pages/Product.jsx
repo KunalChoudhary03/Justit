@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, rmvItem } from '../redux/Slices/Slice';
-import { fetchProducts } from '../redux/ProductSlice';
+import { fetchProducts } from '../redux/Thunk/ProductDataThunk';
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Product = () => {
           >
             <div className="relative">
               <img
-                src={product.thumbnail}
+                src={product.image}
                 alt={product.title}
                 className="w-full h-56 object-cover"
               />
@@ -39,7 +39,7 @@ const Product = () => {
                 New
               </span>
               <span className="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded-lg shadow">
-                ${product.price}
+                {product.price}
               </span>
             </div>
 
