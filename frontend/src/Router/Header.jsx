@@ -3,8 +3,11 @@ import { useDispatch } from 'react-redux'
 import { rmvAll } from '../redux/Slices/Slice'
 import { Link } from 'react-router-dom'
 import ProfileButton from '../Components/ProfileButton'
+import { setSearchQuery } from '../redux/Slices/SearchSlice'
 
 const Header = () => {
+
+
   const dispatch = useDispatch()
 
   return (
@@ -15,7 +18,13 @@ const Header = () => {
          <li><Link to="/contact" className="hover:text-gray-200 transition">Contact</Link></li>
          <li><Link to="/service" className="hover:text-gray-200 transition">Service</Link></li>
       </ul>
-
+    
+      <input
+  type="text"
+  placeholder="Search products..."
+  onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+  className="w-72 pl-10 pr-4 py-2 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300"
+/>
       <div className="flex items-center gap-3">
         <button
           onClick={() => dispatch(rmvAll())}
