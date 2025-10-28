@@ -3,11 +3,12 @@ const router = express.Router()
 const userModel = require('../models/user.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-
+const dotenv = require("dotenv")
+dotenv.config()
 
 router.post('/register',async(req,res)=>{
   try{
-  const{name,email,password} = req.body
+  const{name,email,password,adminPasskey} = req.body
   const existingUser = await userModel.findOne({email})
   if(existingUser){
     return res.status(400).json({
@@ -15,16 +16,20 @@ router.post('/register',async(req,res)=>{
     })
   }
  const hashPassword = await bcrypt.hash(password,10)
-
+  let role = "user"
+  if(adminPasskey && adminPasskey == process.env.ADMIN_PASS_KEY){
+    role = "admin"
+  }
   const user  =  await userModel.create({
     name,
     email,
-    password:hashPassword
+    password:hashPassword,
+    role
   })
   
   res.status(201).json({
    message:"user created successfully",
-   user:{ id: user._id,name:user.name, email: user.email},
+   user:{ id: user._id,name:user.name, email: user.email,role:user.role},
    token: jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET)
    
   })

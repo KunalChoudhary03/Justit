@@ -4,7 +4,7 @@ import { registerUser } from '../redux/Thunk/AuthThunk';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [data, setData] = useState({ name: "", email: "", password: "" });
+  const [data, setData] = useState({ name: "", email: "", password: "",  adminPasskey:"" });
   const [registerError, setregisterError] = useState()
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,6 +55,17 @@ const Register = () => {
             />
           </div>
 
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Admin's Passkey</label>
+            <input
+              name="adminPasskey"
+              onChange={handleChange}
+              value={data.adminPasskey}
+              type="password"
+              placeholder="Enter your Passkey to become an admin"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
           <div>
             <label className="block text-gray-700 font-medium mb-1">Password</label>
             <input
