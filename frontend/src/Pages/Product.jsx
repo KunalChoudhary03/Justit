@@ -34,9 +34,9 @@ const Product = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-5 z-10">
-      <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
-      <img className="w-full rounded-5xl p-3 " src="https://imgs.search.brave.com/SrBG59TMC05J4pWEQZs6Yxa7Eb0Fxg41w0OuPohM50I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9taXIt/czMtY2RuLWNmLmJl/aGFuY2UubmV0L3By/b2plY3RfbW9kdWxl/cy9kaXNwLzkzZmJm/ZDIyNzY0MzQ0OS42/ODQzZDhjZWYzMjkx/LmpwZw" alt="" />
-      </h1>
+     <div className="">
+      <img className="w-full rounded-5xl p-3 mb-8" src="https://cdn.zeptonow.com/production/tr:w-1280,ar-2560-640,pr-true,f-auto,q-80/inventory/banner/257473f7-74bb-439a-915f-6c18d1545cd1.png" alt="" />
+      </div>
 
       {filteredItems.length === 0 && (
         <p className="text-center text-gray-600 text-lg">
@@ -75,13 +75,13 @@ const Product = () => {
               <div className="mt-4 flex justify-between gap-2">
                 <button
                   onClick={() => dispatch(addItem(product))}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-colors"
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-green-500 border-green-500 font-semibold py-2 rounded-lg transition-colors"
                 >
                   Add to Cart
                 </button>
                 <button
                   onClick={() => dispatch(rmvItem(product))}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors"
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-red-500 border-red-500 font-semibold py-2 rounded-lg transition-colors"
                 >
                   Remove
                 </button>

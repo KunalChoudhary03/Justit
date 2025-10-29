@@ -23,7 +23,6 @@ const Profile = () => {
  if(!token){
   return (
    <div>
-    <p>You are Not logged in Please login</p>
     <Login />
    </div>
  )
