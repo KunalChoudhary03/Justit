@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, rmvItem } from "../redux/Slices/Slice";
 import { fetchProducts } from "../redux/Thunk/ProductDataThunk";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -73,18 +74,32 @@ const Product = () => {
               </p>
 
               <div className="mt-4 flex justify-between gap-2">
-                <button
-                  onClick={() => dispatch(addItem(product))}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-green-500 border-green-500 font-semibold py-2 rounded-lg transition-colors"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  onClick={() => dispatch(rmvItem(product))}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-red-500 border-red-500 font-semibold py-2 rounded-lg transition-colors"
-                >
-                  Remove
-                </button>
+               <button
+  onClick={() => {
+    dispatch(addItem(product));
+    toast.success("Item added to cart! 🛒", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  }}
+  className="flex-1 bg-gray-100 hover:bg-gray-200 text-green-500 border-green-500 font-semibold py-2 rounded-lg transition-colors"
+>
+  Add to Cart
+</button>
+
+<button
+  onClick={() => {
+    dispatch(rmvItem(product._id)); 
+    toast.info("Item removed from cart.", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  }}
+  className="flex-1 bg-gray-100 hover:bg-gray-200 text-red-500 border-red-500 font-semibold py-2 rounded-lg transition-colors"
+>
+  Remove
+</button>
+
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {addItem,rmvItem,decreaseItem,rmvAll} from "../redux/Slices/Slice"
+import { toast } from "react-toastify";
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartItems, totalPrice, totalQuantity } = useSelector((state) => state.cart);
@@ -32,7 +33,7 @@ const Cart = () => {
                 </button>
                 <span>{item.quantity}</span>
                 <button
-                  onClick={() => dispatch(addItem(item))}
+                  onClick={() => {dispatch(addItem(item)); toast.success(`${product.name} added to cart 🛒`);}}
                   className="px-2 py-1 bg-gray-200 rounded"
                 >
                   +
