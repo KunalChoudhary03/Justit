@@ -55,17 +55,7 @@ const Register = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Admin's Passkey</label>
-            <input
-              name="adminPasskey"
-              onChange={handleChange}
-              value={data.adminPasskey}
-              type="password"
-              placeholder="Enter your Passkey to become an admin"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            />
-          </div>
+          
           <div>
             <label className="block text-gray-700 font-medium mb-1">Password</label>
             <input
@@ -77,7 +67,17 @@ const Register = () => {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
-
+           <div>
+            <label className="block text-gray-700 font-medium mb-1">Admin's Passkey(If you wants to list product)</label>
+            <input
+              name="adminPasskey"
+              onChange={handleChange}
+              value={data.adminPasskey}
+              type="password"
+              placeholder="Enter your Passkey to become an admin"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"

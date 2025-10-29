@@ -1,18 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCart } from "lucide-react";
 
 const AddToCart = () => {
-  const cartValue = useSelector((state) => state.cart.value)
+  const navigate = useNavigate();
 
   return (
-    <div className="flex items-center gap-2 bg-white shadow-md px-4 py-2 rounded-full hover:shadow-xl transition-shadow duration-200 cursor-pointer">
-      <span className="text-xl">🛒</span>
-      <span className="font-semibold text-gray-800">Cart</span>
-      <span className="ml-2 text-sm text-white bg-red-600 rounded-full px-3 py-1 font-medium">
-        {cartValue}
-      </span>
+    <div 
+      onClick={() => navigate('/cart')} 
+      className="cursor-pointer flex flex-col items-center group"
+    >
+      <ShoppingCart className="w-7 h-7 text-white group-hover:text-yellow-300 transition-colors" />
+      <p className="text-sm font-medium mt-1 group-hover:text-yellow-100">Cart</p>
     </div>
-  )
-}
+  );
+};
 
-export default AddToCart
+export default AddToCart;

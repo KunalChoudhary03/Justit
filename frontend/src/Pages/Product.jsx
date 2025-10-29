@@ -35,7 +35,7 @@ const Product = () => {
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-5 z-10">
       <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
-        Our Products
+      <img className="w-full rounded-5xl p-3 " src="https://imgs.search.brave.com/SrBG59TMC05J4pWEQZs6Yxa7Eb0Fxg41w0OuPohM50I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9taXIt/czMtY2RuLWNmLmJl/aGFuY2UubmV0L3By/b2plY3RfbW9kdWxl/cy9kaXNwLzkzZmJm/ZDIyNzY0MzQ0OS42/ODQzZDhjZWYzMjkx/LmpwZw" alt="" />
       </h1>
 
       {filteredItems.length === 0 && (

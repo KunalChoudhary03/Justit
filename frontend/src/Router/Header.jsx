@@ -1,45 +1,50 @@
-import AddToCart from '../Pages/AddToCart'
-import { useDispatch } from 'react-redux'
-import { rmvAll } from '../redux/Slices/Slice'
-import { Link } from 'react-router-dom'
-import ProfileButton from '../Components/ProfileButton'
-import { setSearchQuery } from '../redux/Slices/SearchSlice'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import AddToCart from '../Pages/AddToCart';
+import ProfileButton from '../Components/ProfileButton';
+import { setSearchQuery } from '../redux/Slices/SearchSlice';
 
 const Header = () => {
-
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
-    <nav className="flex justify-between items-center top-0 sticky bg-blue-400 p-4 shadow-md text-white z-20">
-      <ul className="flex gap-8 text-xl font-medium">
-         <li><Link to="/" className="hover:text-gray-200 transition">Home</Link></li>
-         <li><Link to="/about" className="hover:text-gray-200 transition">About</Link></li>
-         <li><Link to="/contact" className="hover:text-gray-200 transition">Contact</Link></li>
-         <li><Link to="/service" className="hover:text-gray-200 transition">Service</Link></li>
+    <nav className="flex justify-between items-center sticky top-0 bg-gradient-to-r from-gray-900 to-gray-600   px-5 py-2 shadow-lg text-white z-50 ">
+      
+      <ul className="flex gap-8 text-lg font-semibold">
+        <li><Link to="/" className="hover:text-gray-200 transition-colors">Home</Link></li>
+        <li><Link to="/about" className="hover:text-gray-200 transition-colors">About</Link></li>
+        <li><Link to="/contact" className="hover:text-gray-200 transition-colors">Contact</Link></li>
+        <li><Link to="/service" className="hover:text-gray-200 transition-colors">Service</Link></li>
       </ul>
-    
-      <input
-  type="text"
-  placeholder="Search products..."
-  onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-  className="w-72 pl-10 pr-4 py-2 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300"
-/>
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => dispatch(rmvAll())}
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition-all duration-200"
+
+      <div className="relative w-150">
+        <input
+          type="text"
+          placeholder="Search for products..."
+          onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+          className="w-full pl-12 pr-4 py-2 text-gray-700 bg-white rounded-full shadow-md border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400 transition-all"
+        />
+        <svg
+          className="absolute left-4 top-2.5 w-5 h-5 text-gray-500"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
         >
-          Clear Cart
-        </button>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.2-5.2M10 18a8 8 0 100-16 8 8 0 000 16z" />
+        </svg>
+      </div>
+
+      {/* Right Side Icons */}
+      <div className="flex items-center gap-8">
+        <ProfileButton />
         <AddToCart />
-      <ProfileButton />
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Header
-
+export default Header;
 
 

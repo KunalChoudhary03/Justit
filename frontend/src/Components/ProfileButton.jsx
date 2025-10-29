@@ -1,14 +1,19 @@
-import React from 'react'
-import Profile from './Profile'
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaUserCircle } from "react-icons/fa";
 
 const ProfileButton = () => {
-    const navigate = useNavigate();
-  return (
-    <div onClick={()=>navigate('/Profile')} className="cursor-pointer bg-white text-blue-600 px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-shadow duration-200">
-     Sign In
-    </div>
-  )
-}
+  const navigate = useNavigate();
 
-export default ProfileButton
+  return (
+    <div 
+      onClick={() => navigate('/profile')} 
+      className="cursor-pointer flex flex-col items-center group"
+    >
+      <FaUserCircle className="text-4xl text-white group-hover:text-yellow-300 transition-colors" />
+      <span className="text-sm font-medium mt-1 group-hover:text-yellow-100">Login</span>
+    </div>
+  );
+};
+
+export default ProfileButton;

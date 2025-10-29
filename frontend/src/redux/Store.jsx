@@ -29,7 +29,7 @@ const store = configureStore({
     cart: cartReducer,
     products: productsReducer,
     auth: persistedAuthReducer,
-     search: searchReducer,
+    search: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
