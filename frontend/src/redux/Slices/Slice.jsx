@@ -34,6 +34,7 @@ const addToCart = createSlice({
                     state.totalPrice -= extractNumber(existingItem.price) * existingItem.quantity
                     state.cartItems = state.cartItems.filter(i=> i.id !== id) 
                 }
+                return state;
         },
         decreaseItem: (state, action) => {
       const id = action.payload;
