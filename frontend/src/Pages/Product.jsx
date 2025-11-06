@@ -8,27 +8,37 @@ const Product = () => {
   const { items, status, error } = useSelector((state) => state.products);
   const searchQuery = useSelector((state) => state.search.query.toLowerCase());
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // ✅ you can change this
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const itemsPerPage = 8;
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const filteredItems = items.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchQuery) ||
-      product.category?.toLowerCase().includes(searchQuery)
-  );
+  const categories = ["All", ...new Set(items.map((p) => p.category))];
 
-  // ✅ Pagination logic
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const filteredItems = items.filter((product) => {
+    const name = product.name?.toLowerCase() || "";
+    const category = product.category?.toLowerCase() || "";
+    const matchesSearch =
+      name.includes(searchQuery) || category.includes(searchQuery);
+    const matchesCategory =
+      selectedCategory === "All" || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const displayItems = filteredItems;
+
+  // Pagination logic
+  const totalPages = Math.ceil(displayItems.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredItems.slice(startIndex, endIndex);
+  const currentItems = displayItems.slice(startIndex, endIndex);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // smooth scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (status === "loading") {
@@ -47,21 +57,54 @@ const Product = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-5 z-10">
+      {/* Filter Section - moved to top */}
+     
+
+      {/* Banner */}
       <div>
         <img
           className="w-full rounded-3xl p-3 mb-8"
           src="https://cdn.zeptonow.com/production/tr:w-1280,ar-2560-640,pr-true,f-auto,q-80/inventory/banner/257473f7-74bb-439a-915f-6c18d1545cd1.png"
-          alt=""
+          alt="banner"
         />
       </div>
 
-      {filteredItems.length === 0 && (
+      {/* No Results */}
+      {displayItems.length === 0 && (
         <p className="text-center text-gray-600 text-lg">
-          No products match your search.
+          No products match your filters.
         </p>
       )}
+ <div className="flex flex-wrap justify-center gap-5 mb-8 bg-white p-4 rounded-xl shadow">
+        <div>
+          <label className="font-semibold text-gray-700 mr-2">Category:</label>
+          <select
+            value={selectedCategory}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="border border-gray-300 rounded-lg px-3 py-2"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* ✅ Product Grid */}
+        <button
+          onClick={() => {
+            setSelectedCategory("All");
+            setCurrentPage(1);
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+        >
+          Reset
+        </button>
+      </div>
+      {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {currentItems.map((product) => (
           <div
@@ -87,7 +130,7 @@ const Product = () => {
                 {product.name}
               </h2>
               <p className="text-gray-600 text-sm flex-1">
-                {product.description.slice(0, 80)}...
+                {product.description.slice(0, 50)}...
               </p>
 
               <div className="mt-4 flex justify-between gap-2">
@@ -98,8 +141,8 @@ const Product = () => {
         ))}
       </div>
 
-      {/* ✅ Pagination controls */}
-      {filteredItems.length > itemsPerPage && (
+      {/* Pagination */}
+      {displayItems.length > itemsPerPage && (
         <div className="flex justify-center items-center mt-10 gap-3 flex-wrap">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -113,7 +156,6 @@ const Product = () => {
             Prev
           </button>
 
-          {/* Page numbers */}
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i + 1}
