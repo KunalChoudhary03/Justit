@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/Thunk/ProductDataThunk";
 import AddToCartBtn from "../Components/AddToCartBtn";
-
 const Product = () => {
   const dispatch = useDispatch();
   const { items, status, error } = useSelector((state) => state.products);
@@ -59,7 +58,6 @@ const Product = () => {
     <div className="bg-gray-100 min-h-screen py-10 px-5 z-10">
       {/* Filter Section - moved to top */}
      
-
       {/* Banner */}
       <div>
         <img
