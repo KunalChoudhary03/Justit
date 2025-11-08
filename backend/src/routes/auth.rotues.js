@@ -52,7 +52,7 @@ router.post("/login", async(req,res)=>{
     if (user) {
       return res.status(200).json({ 
         message: "User already logged in",
-        user: { id: user._id, email: user.email },
+        user: { id: user._id, email: user.email ,role: user.role},
         token: existingToken,
         name:user.name
       });
@@ -78,7 +78,8 @@ router.post("/login", async(req,res)=>{
   }
   const token = jwt.sign({
     id:user._id,
-    email:user.email
+    email:user.email,
+    role:user.role
   },process.env.JWT_SECRET)
  res.cookie("token", token,{
   httpOnly: true,
@@ -88,7 +89,7 @@ router.post("/login", async(req,res)=>{
 
   res.status(200).json({
     message : "User logged in  successfully",
-    user:{id:user._id,email:user.email,name:user.name},
+    user:{id:user._id,email:user.email,name:user.name,role:user.role},
     token
   })
 })
