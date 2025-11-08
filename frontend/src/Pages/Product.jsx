@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/Thunk/ProductDataThunk";
 import AddToCartBtn from "../Components/AddToCartBtn";
+
 const Product = () => {
   const dispatch = useDispatch();
-  const { items, status, error } = useSelector((state) => state.products);
-  const searchQuery = useSelector((state) => state.search.query.toLowerCase());
+  const { items, loading, error } = useSelector((state) => state.products);
+  const searchQuery = useSelector((state) =>
+    state.search.query ? state.search.query.toLowerCase() : ""
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const itemsPerPage = 8;
@@ -19,6 +23,7 @@ const Product = () => {
   const filteredItems = items.filter((product) => {
     const name = product.name?.toLowerCase() || "";
     const category = product.category?.toLowerCase() || "";
+
     const matchesSearch =
       name.includes(searchQuery) || category.includes(searchQuery);
     const matchesCategory =
@@ -27,26 +32,25 @@ const Product = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const displayItems = filteredItems;
-
-  // Pagination logic
-  const totalPages = Math.ceil(displayItems.length / itemsPerPage);
+  //  Pagination Logic
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = displayItems.slice(startIndex, endIndex);
+  const currentItems = filteredItems.slice(startIndex, endIndex);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (status === "loading") {
+  //  UI states (loading/error)
+  if (loading) {
     return (
       <h2 className="text-center text-xl font-semibold mt-10">Loading...</h2>
     );
   }
 
-  if (status === "failed") {
+  if (error) {
     return (
       <h2 className="text-center text-xl font-semibold mt-10 text-red-600">
         Error: {error}
@@ -55,10 +59,8 @@ const Product = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-10 px-5 z-10">
-      {/* Filter Section - moved to top */}
-     
-      {/* Banner */}
+    <div className="bg-gray-100 min-h-screen py-10 px-5">
+      {/*  Banner */}
       <div>
         <img
           className="w-full rounded-3xl p-3 mb-8"
@@ -67,13 +69,8 @@ const Product = () => {
         />
       </div>
 
-      {/* No Results */}
-      {displayItems.length === 0 && (
-        <p className="text-center text-gray-600 text-lg">
-          No products match your filters.
-        </p>
-      )}
- <div className="flex flex-wrap justify-center gap-5 mb-8 bg-white p-4 rounded-xl shadow">
+      {/*  Category Filter */}
+      <div className="flex flex-wrap justify-center gap-5 mb-8 bg-white p-4 rounded-xl shadow">
         <div>
           <label className="font-semibold text-gray-700 mr-2">Category:</label>
           <select
@@ -102,7 +99,15 @@ const Product = () => {
           Reset
         </button>
       </div>
-      {/* Product Grid */}
+
+      {/*  No Results */}
+      {filteredItems.length === 0 && (
+        <p className="text-center text-gray-600 text-lg">
+          No products match your filters.
+        </p>
+      )}
+
+      {/*  Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {currentItems.map((product) => (
           <div
@@ -128,7 +133,7 @@ const Product = () => {
                 {product.name}
               </h2>
               <p className="text-gray-600 text-sm flex-1">
-                {product.description.slice(0, 50)}...
+                {product.description?.slice(0, 50)}...
               </p>
 
               <div className="mt-4 flex justify-between gap-2">
@@ -140,7 +145,7 @@ const Product = () => {
       </div>
 
       {/* Pagination */}
-      {displayItems.length > itemsPerPage && (
+      {filteredItems.length > itemsPerPage && (
         <div className="flex justify-center items-center mt-10 gap-3 flex-wrap">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

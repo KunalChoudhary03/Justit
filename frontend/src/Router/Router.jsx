@@ -8,6 +8,13 @@ import Register from '../Pages/Register'
 import Login from '../Pages/Login'
 import Profile from '../Components/Profile'
 import Cart from '../Pages/Cart'
+import AdminDashboard from '../Pages/Admin/AdminDashboard'
+import AdminProducts from '../Pages/Admin/AdminProducts'
+import ProtectedRoute from './ProtectedRoutes'
+import AdminUsers from '../Pages/Admin/AdminUsers'
+import AddProduct from '../Pages/Admin/AddProduct'
+import EditProduct from '../Pages/Admin/EditProduct'
+import AdminLayout from '../Pages/Admin/AdminLayout'
 
 const Router = () => {
   return (
@@ -21,7 +28,15 @@ const Router = () => {
         <Route path="/profile" element={<Profile />}/>
         <Route path="/cart" element={<Cart />}/>
         
-        
+        <Route path="/admin" element={<ProtectedRoute> <AdminLayout /> </ProtectedRoute> }/>
+        <Route path="/admin/dashboard" element={<ProtectedRoute> <AdminDashboard /> </ProtectedRoute> }/>
+        <Route path="/admin/product" element={<ProtectedRoute> <AdminProducts /> </ProtectedRoute> }/>
+        <Route path="/admin/users" element={<ProtectedRoute> <AdminUsers /> </ProtectedRoute> }/>
+        <Route path="/admin/addproduct" element={<ProtectedRoute> <AddProduct /> </ProtectedRoute> }/>
+       <Route path="/admin/editproduct/:id" element={  <ProtectedRoute><EditProduct /> 
+       </ProtectedRoute> }/>
+
+         
      </Routes>
   )
 }
