@@ -15,6 +15,7 @@ import AdminUsers from '../Pages/Admin/AdminUsers'
 import AddProduct from '../Pages/Admin/AddProduct'
 import EditProduct from '../Pages/Admin/EditProduct'
 import AdminLayout from '../Pages/Admin/AdminLayout'
+import Details from '../Pages/Details'
 
 const Router = () => {
   return (
@@ -27,6 +28,8 @@ const Router = () => {
         <Route path="/login" element={<Login />}/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/cart" element={<Cart />}/>
+        <Route path="/details/:id" element={<Details />} />
+
         
         <Route path="/admin" element={<ProtectedRoute> <AdminLayout /> </ProtectedRoute> }/>
         <Route path="/admin/dashboard" element={<ProtectedRoute> <AdminDashboard /> </ProtectedRoute> }/>

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from "react-router-dom";
 import store, { persistor } from "./redux/Store.jsx"
 import { PersistGate } from 'redux-persist/integration/react';
+
 createRoot(document.getElementById('root')).render(
    
    <Provider store={store}>

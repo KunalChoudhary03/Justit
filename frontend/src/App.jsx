@@ -3,7 +3,6 @@ import Header from './Router/Header.jsx'
 import Router from './Router/Router.jsx'
 import { ToastContainer } from 'react-toastify'
 
-
 const App = () => {
   return (
     <div className=''>

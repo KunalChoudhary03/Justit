@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/Thunk/ProductDataThunk";
 import AddToCartBtn from "../Components/AddToCartBtn";
+import { useNavigate } from "react-router-dom";
 
 const Product = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { items, loading, error } = useSelector((state) => state.products);
   const searchQuery = useSelector((state) =>
     state.search.query ? state.search.query.toLowerCase() : ""
@@ -114,7 +116,7 @@ const Product = () => {
             key={product._id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 overflow-hidden relative flex flex-col items-center p-3"
           >
-            <div className="relative w-full">
+            <div onClick={()=>{navigate(`/details/${product._id}`)}} className="relative w-full" >
               <img
                 src={product.image}
                 alt={product.name}
@@ -124,7 +126,7 @@ const Product = () => {
                 {product.category}
               </span>
               <span className="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded-lg shadow">
-                ₹{product.price}
+                {product.price}
               </span>
             </div>
 
