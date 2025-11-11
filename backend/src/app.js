@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth.rotues")
 const userRoutes = require("./routes/user.routes");
 const productroutes = require('./routes/productroutes');
+const cartRoutes = require("./routes/cart.rotuer");
 const cors = require("cors");
 const app = express();
 app.use(express.json())
@@ -15,5 +16,6 @@ app.use(cors({
 app.use('/product',productroutes)
 app.use('/auth',authRoutes)
 app.use('/user',userRoutes)
+app.use('/cart',cartRoutes)
 module.exports = app;
 
