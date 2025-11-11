@@ -16,9 +16,7 @@ const AdminLayout = () => {
         <button onClick={() => navigate("/admin/addproduct")} className="block w-full text-left hover:text-green-400">
           Add Product
         </button>
-        <button onClick={() => navigate("/admin/editproduct")} className="block w-full text-left hover:text-green-400">
-          Edit Product
-        </button>
+        
         <button onClick={() => navigate("/admin/users")} className="block w-full text-left hover:text-green-400">
           Users
         </button>
