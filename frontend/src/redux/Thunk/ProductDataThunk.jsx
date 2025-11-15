@@ -15,7 +15,7 @@ export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
 export const deleteProduct = createAsyncThunk("products/delete", async (id) => {
   try {
     const res = await axios.delete(`http://localhost:3000/product/delete/${id}`);
-    return { id, message: res.data.message }; // return deleted product id
+    return { id, message: res.data.message }; 
   } catch (error) {
     console.error("Error deleting product:", error.message);
     throw error;

@@ -1,62 +1,84 @@
-import { createSlice } from "@reduxjs/toolkit"
-const extractNumber = (priceString) => {
-  const match = String(priceString).match(/\d+(\.\d+)?/);
-  return match ? Number(match[0]) : 0;
+import { createSlice } from "@reduxjs/toolkit";
+import { addItem, getItem, removeItem, increaseQty, decreaseItem } from "../Thunk/CartThunk";
+
+
+
+const initialState = {
+  cartItems: [],
+  totalQuantity: 0,
+  totalPrice: 0,
+  loading: false,
+  error: null,
 };
 
-const initialState={
-   cartItems:[],
-   totalQuantity:0,
-   totalPrice:0
-}
-const addToCart = createSlice({
-    name: "cart",
-    initialState,
-    reducers:{
-      addItem:(state,action)=>{
-        let item = action.payload
-        let existingItem = state.cartItems.find(i=> i.id == item.id)
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {},
 
-         if(existingItem){
-           existingItem.quantity +=1
-         }
-         else{
-           state.cartItems.push({...item,quantity:1})
-         }
-         state.totalQuantity += 1;
-         state.totalPrice += extractNumber(item.price)
-        },
-        rmvItem:(state,action)=>{
-                let id  = action.payload;
-                let existingItem = state.cartItems.find(i=> i.id == id)
-                if(existingItem){
-                    state.totalQuantity -= existingItem.quantity;
-                    state.totalPrice -= extractNumber(existingItem.price) * existingItem.quantity
-                    state.cartItems = state.cartItems.filter(i=> i.id !== id) 
-                }
-                return state;
-        },
-        decreaseItem: (state, action) => {
-      const id = action.payload;
-      const existingItem = state.cartItems.find(i => i.id === id);
+  // ----- Extra reducers for thunks -----
+  extraReducers: (builder) => {
+    // ========================
+    // GET CART FROM DB
+    // ========================
+    builder
+      .addCase(getItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload.items || [];
+        state.totalQuantity = action.payload.totalQuantity || 0;
+        state.totalPrice = action.payload.totalPrice || 0;
+      })
+      .addCase(getItem.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload; 
+});
 
-      if (existingItem) {
-        existingItem.quantity -= 1;
-        state.totalQuantity -= 1;
-        state.totalPrice -= extractNumber(existingItem.price);
+ 
 
-        if (existingItem.quantity <= 0) {
-          state.cartItems = state.cartItems.filter(i => i.id !== id);
-        }
-      }
-    },
-        rmvAll:(state)=>{
-            state.cartItems = [];
-          state.totalQuantity = 0;
-           state.totalPrice = 0;
-        }
-    }
-})
+    // ========================
+    // ADD ITEM
+    // ========================
+    builder
+      .addCase(addItem.fulfilled, (state, action) => {
+        state.cartItems = action.payload.items;
+        state.totalQuantity = action.payload.totalQuantity;
+        state.totalPrice = action.payload.totalPrice;
+      });
 
-export const { addItem,rmvItem,decreaseItem,rmvAll} = addToCart.actions
-export default addToCart.reducer
+    // ========================
+    // REMOVE ITEM
+    // ========================
+    builder
+      .addCase(removeItem.fulfilled, (state, action) => {
+        state.cartItems = action.payload.items;
+        state.totalQuantity = action.payload.totalQuantity;
+        state.totalPrice = action.payload.totalPrice;
+      });
+
+    // ========================
+    // INCREASE QTY
+    // ========================
+    builder
+      .addCase(increaseQty.fulfilled, (state, action) => {
+        state.cartItems = action.payload.items;
+        state.totalQuantity = action.payload.totalQuantity;
+        state.totalPrice = action.payload.totalPrice;
+      });
+
+    // ========================
+    // DECREASE QTY
+    // ========================
+    builder
+      .addCase(decreaseItem.fulfilled, (state, action) => {
+        state.cartItems = action.payload.items;
+        state.totalQuantity = action.payload.totalQuantity;
+        state.totalPrice = action.payload.totalPrice;
+      });
+  },
+});
+
+export default cartSlice.reducer;

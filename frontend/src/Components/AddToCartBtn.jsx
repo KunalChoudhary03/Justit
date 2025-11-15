@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../redux/Slices/Slice";
+import { addItem } from "../redux/Thunk/CartThunk";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,13 @@ const AddToCartBtn = ({ product }) => {
 
   const handleAdd = () => {
     if (!checkLogin()) return;
-    dispatch(addItem(product));
+    
+    // Call thunk with correct parameters
+    dispatch(addItem({ 
+      productId: product._id || product.id, 
+      quantity: 1 
+    }));
+    
     toast.success("Item added to cart! 🛒", {
       position: "top-right",
       autoClose: 1000,

@@ -10,7 +10,7 @@ router.post("/addCart",verifyToken,async (req,res)=>{
         const {productId ,quantity} = req.body;
         let cart = await Cart.findOne({userId});
         if(!cart){
-            cart = new Cart({userId,item:[]})
+            cart = new Cart({userId,items:[]})
         }
         const existingItem = cart.items.find((item)=> item.productId.toString() === productId);
         if(existingItem){
