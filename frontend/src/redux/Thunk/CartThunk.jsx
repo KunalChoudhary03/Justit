@@ -1,87 +1,83 @@
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API = "http://localhost:3000/cart";
 
-//add to cart 
-
+// Add to cart
 export const addItem = createAsyncThunk(
   "cart/addItem",
   async ({ productId, quantity }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
       const res = await axios.post(
         `${API}/addCart`,
         { productId, quantity },
-        { headers: { Authorization: token } }
+        { withCredentials: true } // cookie will be sent
       );
       return res.data;
     } catch (error) {
-     
-      return rejectWithValue({
-        message: error.response?.data?.message || error.message,
-        status: error.response?.status
-      });
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-
-//get cart
+// Get cart
 export const getItem = createAsyncThunk(
-  "getCart",
+  "cart/getItem",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`${API}/get`, {
-         headers: { Authorization: token },
+      const res = await axios.get(`${API}/get`, { withCredentials: true });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Remove item
+export const removeItem = createAsyncThunk(
+  "cart/removeItem",
+  async ({ productId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(`${API}/remove/${productId}`, {
+        withCredentials: true,
       });
       return res.data;
     } catch (error) {
-      return rejectWithValue({
-        message: error.response?.data?.message || error.message,
-        status: error.response?.status,
-      });
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
+// Increase quantity
+export const increaseQty = createAsyncThunk(
+  "cart/increaseQty",
+  async ({ productId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(
+        `${API}/increaseQty`,
+        { productId },
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
-
-export const removeItem = createAsyncThunk("cart/removeItem", async({productId},{rejectWithValue})=>{
-    try{
-  const token = localStorage.getItem("token");
-  const res = await axios.post(`${API}/removeItem`,{productId},{headers:{Authorization: `${token}`}})
-  return res.data
+// Decrease quantity
+export const decreaseItem = createAsyncThunk(
+  "cart/decreaseQty",
+  async ({ productId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(
+        `${API}/decreaseQty`,
+        { productId },
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
-    catch(error){
-  return rejectWithValue(error)
-    }
-})
-
-//increase quantity
-export const increaseQty = createAsyncThunk("cart/increaseQty", async({productId},{rejectWithValue})=>{
-    try{
-        const token = localStorage.getItem("token");
-        const res = await axios.post(`${API}/increaseQty`,{productId},
-            {headers: {Authorization:`${token}`}}
-        )
-        return res.data;
-    }
-    catch(error){
-   return rejectWithValue(error);
-    }
-})
-
-//decrease qunatity
-export const decreaseItem = createAsyncThunk("cart/decreaseQty",async({productId},{rejectWithValue})=>{
-    try{
-        const token = localStorage.getItem("token")
-        const res = await axios.put(`${API}/decreaseQty`,{productId},{headers:{Authorization : token}});
-        return res.data;
-    }
-    catch(error){
-        return rejectWithValue(error);
-    }
-})
+  }
+);
