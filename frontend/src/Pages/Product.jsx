@@ -121,7 +121,7 @@ const Product = () => {
                 {product.category}
               </div>
               <div className="absolute top-3 right-3 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-                ₹{product.price}
+                {product.price}
               </div>
             </div>
 
