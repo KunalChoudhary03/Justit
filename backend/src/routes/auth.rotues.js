@@ -6,42 +6,61 @@ const jwt = require('jsonwebtoken')
 const dotenv = require("dotenv")
 dotenv.config()
 
-router.post('/register',async(req,res)=>{
-  try{
-  const{name,email,password,adminPasskey} = req.body
-  const existingUser = await userModel.findOne({email})
-  if(existingUser){
-    return res.status(400).json({
-      message:"user already exists"
-    })
-  }
- const hashPassword = await bcrypt.hash(password,10)
-  let role = "user"
-  if(adminPasskey && adminPasskey == process.env.ADMIN_PASS_KEY){
-    role = "admin"
-  }
-  const user  =  await userModel.create({
-    name,
-    email,
-    password:hashPassword,
-    role
-  })
-  
-  res.status(201).json({
-   message:"user created successfully",
-   user:{ id: user._id,name:user.name, email: user.email,role:user.role},
-   token: jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET)
-   
-  })
-  res.cookie("token",token);
-}
-catch(error){
-  return res.status(500).json({
-    message:error
-  })
-  }
+router.post("/register", async (req, res) => {
+  try {
+    const { name, email, password, adminPasskey } = req.body;
 
-})
+    // Check if user exists
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Decide role
+    const role = adminPasskey === process.env.ADMIN_PASS_KEY ? "admin" : "user";
+
+    // Create user
+    const user = await userModel.create({
+      name,
+      email,
+      password: hashedPassword,
+      role
+    });
+
+    // Generate token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET
+    );
+
+    // Set cookie (use 'lax' for local dev cross-origin requests)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+    });
+
+    // Response
+    res.status(201).json({
+      message: "User created successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      token,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+
 
 router.post("/login", async(req,res)=>{
   const existingToken = req.cookies.token;
@@ -83,8 +102,8 @@ router.post("/login", async(req,res)=>{
   },process.env.JWT_SECRET)
  res.cookie("token", token,{
   httpOnly: true,
-  secure: true,
-  sameSite: "strict",
+  secure: false,
+  sameSite: "none",
 });
 
   res.status(200).json({
@@ -96,7 +115,7 @@ router.post("/login", async(req,res)=>{
 
 router.post("/logout", async(req,res)=>{
   res.clearCookie("token",{
-    secure:true
+    secure:false
   })
   res.status(200).json({
     message: 'User log Out successfully'

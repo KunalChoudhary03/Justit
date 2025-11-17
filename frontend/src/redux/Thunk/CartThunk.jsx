@@ -3,16 +3,31 @@ import axios from "axios";
 
 const API = "http://localhost:3000/cart";
 
+// Clear cart
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.delete(`${API}/clear`, config);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 // Add to cart
 export const addItem = createAsyncThunk(
   "cart/addItem",
-  async ({ productId, quantity }, { rejectWithValue }) => {
+  async ({ productId, quantity }, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.post(
-        `${API}/addCart`,
-        { productId, quantity },
-        { withCredentials: true } // cookie will be sent
-      );
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.post(`${API}/addCart`, { productId, quantity }, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -23,9 +38,12 @@ export const addItem = createAsyncThunk(
 // Get cart
 export const getItem = createAsyncThunk(
   "cart/getItem",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.get(`${API}/get`, { withCredentials: true });
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.get(`${API}/get`, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -36,11 +54,12 @@ export const getItem = createAsyncThunk(
 // Remove item
 export const removeItem = createAsyncThunk(
   "cart/removeItem",
-  async ({ productId }, { rejectWithValue }) => {
+  async ({ productId }, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.delete(`${API}/remove/${productId}`, {
-        withCredentials: true,
-      });
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.delete(`${API}/remove/${productId}`, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -51,13 +70,12 @@ export const removeItem = createAsyncThunk(
 // Increase quantity
 export const increaseQty = createAsyncThunk(
   "cart/increaseQty",
-  async ({ productId }, { rejectWithValue }) => {
+  async ({ productId }, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.put(
-        `${API}/increaseQty`,
-        { productId },
-        { withCredentials: true }
-      );
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.post(`${API}/increaseQty`, { productId }, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -68,13 +86,12 @@ export const increaseQty = createAsyncThunk(
 // Decrease quantity
 export const decreaseItem = createAsyncThunk(
   "cart/decreaseQty",
-  async ({ productId }, { rejectWithValue }) => {
+  async ({ productId }, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.put(
-        `${API}/decreaseQty`,
-        { productId },
-        { withCredentials: true }
-      );
+      const token = getState().auth?.token;
+      const config = { withCredentials: true, headers: {} };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      const res = await axios.put(`${API}/decreaseQty`, { productId }, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

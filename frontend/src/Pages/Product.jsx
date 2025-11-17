@@ -134,7 +134,7 @@ const Product = () => {
               </p>
 
               <div className="mt-4 flex justify-between items-center">
-                <AddToCartBtn product={product} />
+                <AddToCartBtn productId={product._id} quantity={1} />
               </div>
             </div>
           </motion.div>

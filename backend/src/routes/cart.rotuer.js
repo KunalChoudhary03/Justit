@@ -101,4 +101,19 @@ router.put("/decreaseQty", verifyToken, async (req, res) => {
   }
 });
 
+// Clear cart
+router.delete("/clear", verifyToken, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ userId: req.user.id });
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+    cart.items = [];
+    await cart.save();
+    const populatedCart = await cart.populate("items.productId");
+    res.json(populatedCart);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

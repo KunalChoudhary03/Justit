@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getItem, removeItem, increaseQty, decreaseItem } from "../redux/Thunk/CartThunk";
+import { getItem, removeItem, increaseQty, decreaseItem, clearCart } from "../redux/Thunk/CartThunk";
 import { toast } from "react-toastify";
 
 const Cart = () => {
@@ -22,13 +22,26 @@ const Cart = () => {
         <p className="text-gray-500">Your cart is empty</p>
       ) : (
         <div>
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => {
+                  dispatch(clearCart())
+                    .unwrap()
+                    .then(() => toast.info('Cart cleared'))
+                    .catch(() => toast.error('Failed to clear cart'));    
+              }}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            >
+              Clear Cart
+            </button>
+          </div>
           {cartItems.map((item) => {
-            const product = item.productId; // populated product
-            if (!product) return null; // safety check
+            const product = item.productId;
+            if (!product) return null; 
 
             return (
               <div key={product._id} className="flex items-center justify-between border-b py-4">
-                {/* Product Info */}
+                
                 <div className="flex items-center space-x-4">
                   <img
                     src={product.image}
@@ -78,7 +91,7 @@ const Cart = () => {
 
           {/* Total Price */}
           <div className="flex justify-between items-center mt-6 border-t pt-4">
-            <p className="text-lg font-semibold">Total: ₹{totalPrice}</p>
+            <p className="text-lg font-semibold">Total: ₹{Number(totalPrice).toFixed(2)}</p>
           </div>
         </div>
       )}
