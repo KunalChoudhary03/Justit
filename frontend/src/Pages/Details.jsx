@@ -42,7 +42,7 @@ const Details = () => {
             </span>
           </div>
           <div className="mt-6">
-            <AddToCartBtn product={product} />
+            <AddToCartBtn productId={product._id} quantity={1} />
           </div>
         </div>
       </div>
