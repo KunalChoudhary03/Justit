@@ -56,7 +56,7 @@ const Product = () => {
       {/* Banner */}
       <div className="mb-8">
         <img
-          className="w-full rounded-3xl shadow-lg"
+          className="w-full rounded-3xl shadow-lg h-40 sm:h-auto object-cover"
           src="https://cdn.zeptonow.com/production/tr:w-1280,ar-2560-640,pr-true,f-auto,q-80/inventory/banner/257473f7-74bb-439a-915f-6c18d1545cd1.png"
           alt="banner"
         />
@@ -101,7 +101,7 @@ const Product = () => {
       )}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
         {currentItems.map((product) => (
           <motion.div
             key={product._id}
@@ -126,7 +126,7 @@ const Product = () => {
             </div>
 
             <div className="p-5 flex flex-col flex-1 w-full">
-              <h2 className="text-lg font-semibold text-gray-800 mb-2 truncate">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 truncate">
                 {product.name}
               </h2>
               <p className="text-gray-600 text-sm flex-1">
