@@ -11,29 +11,57 @@ const passport = require("./config/passport");
 const cors = require("cors");
 const app = express();
 
+// Get environment variables
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
-const isProduction = process.env.NODE_ENV === 'production';
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3000";
+const NODE_ENV = process.env.NODE_ENV || "development";
+const isProduction = NODE_ENV === 'production';
 
-// CORS configuration
+console.log('🚀 Environment Configuration:');
+console.log(`📍 FRONTEND_URL: ${FRONTEND_URL}`);
+console.log(`📍 BACKEND_URL: ${BACKEND_URL}`);
+console.log(`📍 NODE_ENV: ${NODE_ENV}`);
+console.log(`🔒 isProduction: ${isProduction}`);
+
+// CORS configuration - allow both localhost and production URLs
+const allowedOrigins = [
+  FRONTEND_URL,
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://justit-two.vercel.app',
+  'https://justit-yyzo.onrender.com'
+];
+
 app.use(cors({
-    origin: FRONTEND_URL,
-    credentials: true
+    origin: function(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`❌ CORS blocked origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Body parser
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Express session middleware (REQUIRED for passport)
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_session_secret_key',
+  secret: process.env.SESSION_SECRET || 'your_session_secret_key_12345',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: isProduction,
+    secure: isProduction, // true on HTTPS only
     httpOnly: true,
     sameSite: isProduction ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000
+    domain: isProduction ? '.onrender.com' : undefined,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
@@ -41,10 +69,31 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/product',productroutes)
-app.use('/auth',authRoutes)
-app.use('/user',userRoutes)
-app.use('/cart',cartRoutes)
-app.use('/auth', googleAuthRoutes) 
+// Routes
+app.use('/product', productroutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+app.use('/cart', cartRoutes);
+app.use('/auth', googleAuthRoutes);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Backend is running',
+    environment: NODE_ENV,
+    frontendUrl: FRONTEND_URL
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('❌ Error:', err.message);
+  res.status(500).json({ 
+    message: 'Server error', 
+    error: isProduction ? 'Internal server error' : err.message 
+  });
+});
+
 module.exports = app;
 
