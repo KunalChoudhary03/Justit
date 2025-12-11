@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API = "http://localhost:3000/cart";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+const API = `${BACKEND_URL}/cart`;
 
 // Clear cart
 export const clearCart = createAsyncThunk(

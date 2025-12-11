@@ -10,15 +10,21 @@ const Profile = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logoutUser()).unwrap();
-      dispatch(resetAuth());
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
+const handleLogout = async () => {
+  try {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      window.google.accounts.id.disableAutoSelect();
     }
-  };
+
+    await dispatch(logoutUser()).unwrap();
+
+    dispatch(resetAuth());
+    navigate("/login");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   if (!token) {
     return (
