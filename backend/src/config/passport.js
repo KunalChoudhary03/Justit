@@ -5,6 +5,12 @@ const User = require("../models/user.model");
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3000";
 
+console.log('🔐 Google OAuth Configuration:');
+console.log('  Backend URL:', BACKEND_URL);
+console.log('  Callback URL:', `${BACKEND_URL}/auth/google/callback`);
+console.log('  Client ID:', process.env.GOOGLE_CLIENT_ID ? '✅ Set' : '❌ Not Set');
+console.log('  Client Secret:', process.env.GOOGLE_CLIENT_SECRET ? '✅ Set' : '❌ Not Set');
+
 // Google Strategy
 passport.use(
   new GoogleStrategy(
@@ -15,7 +21,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log(' Google profile received:', profile.displayName);
+        console.log('✅ Google profile received:', profile.displayName);
         const { displayName, emails, photos } = profile;
         const email = emails[0]?.value;
         const avatar = photos[0]?.value;
@@ -27,7 +33,7 @@ passport.use(
         // Don't create user here, let the callback route handle it
         return done(null, profile);
       } catch (err) {
-        console.error(' Passport error:', err);
+        console.error('❌ Passport error:', err);
         done(err, null);
       }
     }
