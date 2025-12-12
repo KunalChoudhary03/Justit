@@ -12,18 +12,11 @@ const cors = require("cors");
 const app = express();
 
 // Get environment variables
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL  || "http://localhost:5173";
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3000";
 const NODE_ENV = process.env.NODE_ENV || "development";
 const isProduction = NODE_ENV === 'production';
 
-console.log('🚀 Environment Configuration:');
-console.log(`📍 FRONTEND_URL: ${FRONTEND_URL}`);
-console.log(`📍 BACKEND_URL: ${BACKEND_URL}`);
-console.log(`📍 NODE_ENV: ${NODE_ENV}`);
-console.log(`🔒 isProduction: ${isProduction}`);
-
-// CORS configuration - allow both localhost and production URLs
 const allowedOrigins = [
   FRONTEND_URL,
   'http://localhost:5173',
@@ -37,7 +30,7 @@ app.use(cors({
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.warn(`❌ CORS blocked origin: ${origin}`);
+        console.warn(` CORS blocked origin: ${origin}`);
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -88,7 +81,7 @@ app.get('/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.message);
+  console.error(' Error:', err.message);
   res.status(500).json({ 
     message: 'Server error', 
     error: isProduction ? 'Internal server error' : err.message 
