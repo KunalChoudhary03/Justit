@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     password: { 
         type: String, 
         required: false, 
-        sparse: true,
+        sparse: true,  // this is used to allow multiple null values
         default: null
     }, 
     avatar:{

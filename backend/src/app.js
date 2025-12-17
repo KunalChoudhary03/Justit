@@ -59,8 +59,8 @@ app.use(session({
 }));
 
 // Passport initialization (MUST come after session middleware)
-app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.initialize());
 
 // Routes
 app.use('/product', productroutes);
