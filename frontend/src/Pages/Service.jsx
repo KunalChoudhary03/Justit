@@ -1,6 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Service = () => {
+  const navigate = useNavigate();
+  const handleContactClick = () => {
+    navigate("/contact");
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
@@ -106,7 +111,7 @@ const Service = () => {
           </div>
           <div className="mt-4 lg:mt-0">
             <a
-              href="/contact"
+              onClick={handleContactClick}
               className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-green-700 shadow-sm transition hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-green-600"
             >
               Contact support

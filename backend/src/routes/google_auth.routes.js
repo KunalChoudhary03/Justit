@@ -41,7 +41,7 @@ router.get('/google/callback',
       let existingUser = await User.findOne({ email });
       
       if (!existingUser) {
-        console.log('✅ Creating new Google user:', email);
+        console.log(' Creating new Google user:', email);
         existingUser = await User.create({
           name: displayName,
           email,
@@ -50,7 +50,7 @@ router.get('/google/callback',
           password: null
         });
       } else {
-        console.log('✅ Updating existing user:', email);
+        console.log(' Updating existing user:', email);
         // Update existing user
         if (existingUser.authType !== 'google') {
           existingUser.authType = 'google';
@@ -68,7 +68,7 @@ router.get('/google/callback',
         { expiresIn: '7d' }
       );
       
-      console.log('✅ JWT token generated for:', email);
+      console.log(' JWT token generated for:', email);
       
       // Redirect to frontend with token
       res.redirect(
@@ -76,7 +76,7 @@ router.get('/google/callback',
       );
       
     } catch (error) {
-      console.error('❌ Google auth error:', error);
+      console.error(' Google auth error:', error);
       res.redirect(`${FRONTEND_URL}/login?error=google_auth_failed&msg=${error.message}`);
     }
   }
