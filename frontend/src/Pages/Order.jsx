@@ -8,6 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -19,12 +20,17 @@ const Orders = () => {
 
     async function fetchOrders() {
       try {
+      
+        
         const { data } = await axios.get(`${BACKEND_URL}/orders/my-orders`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        
+        console.log('Orders received:', data);
         setOrders(data);
       } catch (err) {
-        console.error("Error fetching orders:", err);
+        console.error(" Error fetching orders:", err.response?.data || err.message);
+        setError(err.response?.data?.message || "Failed to load orders");
       } finally {
         setLoading(false);
       }
@@ -34,6 +40,15 @@ const Orders = () => {
 
   if (loading) {
     return <div className="text-center py-10 text-lg">Loading orders...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
+        <p className="text-gray-500">{error}</p>
+      </div>
+    );
   }
 
   if (orders.length === 0) {
@@ -47,7 +62,7 @@ const Orders = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">Your Orders</h1>
+      <h1 className="text-3xl font-bold mb-8">Your Orders ({orders.length})</h1>
       
       {orders.map((order) => (
         <div key={order._id} className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-200">

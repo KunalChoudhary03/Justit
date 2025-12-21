@@ -6,18 +6,7 @@ const OrderBtn = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 flex items-center justify-between hover:shadow-lg transition-all">
-      
-      {/* Left Text */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800">
-          My Orders
-        </h3>
-        <p className="text-sm text-gray-500">
-          View your order history and status
-        </p>
-      </div>
-
-      {/* Button */}
+        <h2 className="text-lg font-semibold text-gray-700">View Your Orders</h2>
       <button
         onClick={() => navigate("/orders")}
         className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition"
