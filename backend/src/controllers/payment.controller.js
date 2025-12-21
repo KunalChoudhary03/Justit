@@ -1,6 +1,6 @@
-const productModel = require('../models/product.model');
+const productModel = require('../models/product.models');
 const Razorpay = require('razorpay');
-const paymentModel = require('../models/payment.model');
+const paymentModel = require('../models/Payment');
 const crypto = require('crypto');
 
 const razorpay = new Razorpay({
@@ -17,7 +17,10 @@ async function createOrder(req, res) {
     if (!amountInRupees) {
       const product = await productModel.findOne();
       if (!product) return res.status(404).json({ message: "Product not found" });
-      amountInRupees = product.price?.amount ?? product.price;
+      amountInRupees = Number(product.price);
+      if (!amountInRupees || isNaN(amountInRupees)) {
+        return res.status(400).json({ message: "Invalid product price" });
+      }
     }
 
     const currency = 'INR';
@@ -32,8 +35,9 @@ async function createOrder(req, res) {
 
     await paymentModel.create({
       orderId: order.id,
-      price: { amount: amountInRupees, currency },
-      status: 'PENDING',
+      amount: amountInRupees,
+      currency,
+      status: 'pending',
     });
 
     res.status(201).json(order);
