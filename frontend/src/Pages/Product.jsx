@@ -43,7 +43,15 @@ const Product = () => {
   };
 
   if (loading)
-    return <h2 className="text-center text-xl font-semibold mt-10">Loading...</h2>;
+    return <div className="text-center mt-10">
+  <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
+  <p className="mt-3 text-sm text-red-600 max-w-md mx-auto">
+    We are currently using a free server, so product loading may take up to
+    <span className="font-semibold"> 30 seconds</span>.
+    <br />
+    Thank you for your patience — please wait or refresh the page.
+  </p>
+</div>
   if (error)
     return (
       <h2 className="text-center text-xl font-semibold mt-10 text-red-600">
