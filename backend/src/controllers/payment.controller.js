@@ -8,24 +8,31 @@ const razorpay = new Razorpay({
 });
 
 async function createOrder(req, res) {
-const product = await productModel.findOne();
-const options = {
-    amount: product.price.amount,  
-    currency: product.price.currency,   
-} 
   try {
-    const order = await razorpay.orders.create(options);
-  
+    const product = await productModel.findOne();
 
- const newPayment = await paymentModel.create({
-  orderId: order.id,
-  price: {
-    amount: product.price.amount,
-    currency: product.price.currency
-  },
-  status: 'PENDING',
-});
-  res.status(201).json({ order });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const options = {
+      amount: product.price.amount * 100,
+      currency: product.price.currency,
+    };
+
+    const order = await razorpay.orders.create(options);
+
+    await paymentModel.create({
+      orderId: order.id,
+      price: {
+        amount: product.price.amount,
+        currency: product.price.currency,
+      },
+      status: 'PENDING',
+    });
+
+    res.status(201).json(order);
+
   } catch (error) {
     console.error('Error creating order:', error);
     res.status(500).send('Error creating order');
@@ -34,31 +41,39 @@ const options = {
 
 async function verifyPayment(req, res) {
   const { razorpayOrderId, razorpayPaymentId, signature } = req.body;
-  console.log('verify req.body =', req.body);
-  const secret = process.env.RAZORPAY_KEY_SECRET
+  const secret = process.env.RAZORPAY_KEY_SECRET;
 
   try {
-   const { validatePaymentVerification } = require('../../node_modules/razorpay/dist/utils/razorpay-utils.js')
+    const crypto = require('crypto');
 
-    const result = validatePaymentVerification({ "order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
-    if (result) {
-      const payment = await paymentModel.findOne({ orderId: razorpayOrderId });
-      if (!payment) {
-        console.log('Payment not found for orderId', razorpayOrderId);
-      }
-      payment.paymentId = razorpayPaymentId;
-      payment.signature = signature;
-      payment.status = 'COMPLETED';
-      await payment.save();
-      res.json({ status: 'success' });
-    } else {
-      res.status(400).send('Invalid signature');
+    const body = razorpayOrderId + "|" + razorpayPaymentId;
+    const expectedSignature = crypto
+      .createHmac("sha256", secret)
+      .update(body.toString())
+      .digest("hex");
+
+    if (expectedSignature !== signature) {
+      return res.status(400).send("Invalid signature");
     }
+
+    const payment = await paymentModel.findOne({ orderId: razorpayOrderId });
+    if (!payment) {
+      return res.status(404).json({ message: "Payment not found" });
+    }
+
+    payment.paymentId = razorpayPaymentId;
+    payment.signature = signature;
+    payment.status = 'COMPLETED';
+    await payment.save();
+
+    res.json({ status: "success" });
+
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send('Error verifying payment');
   }
 }
+
 module.exports = {
   createOrder,
   verifyPayment,

@@ -6,7 +6,6 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 function PaymentButton({ amount }) {
   const handlePayment = async () => {
     try {
-      // ✅ correct response handling
       const { data: order } = await axios.post(
         `${BACKEND_URL}/payment/create/orderId`,
         { amount }
