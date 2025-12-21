@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getItem, removeItem, increaseQty, decreaseItem, clearCart } from "../redux/Thunk/CartThunk";
 import { toast } from "react-toastify";
-
+import PaymentButton from '../Components/PaymentBtn';
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartItems, totalPrice, loading } = useSelector((state) => state.cart);
@@ -93,6 +93,7 @@ const Cart = () => {
           <div className="flex justify-between items-center mt-6 border-t pt-4">
             <p className="text-base md:text-lg font-semibold">Total: ₹{Number(totalPrice).toFixed(2)}</p>
           </div>
+          <PaymentButton product={cartItems} />
         </div>
       )}
     </div>

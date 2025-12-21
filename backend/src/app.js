@@ -8,6 +8,7 @@ const productroutes = require('./routes/productroutes');
 const cartRoutes = require("./routes/cart.rotuer");
 const googleAuthRoutes = require("./routes/google_auth.routes");
 const passport = require("./config/passport");
+const paymentRoutes = require("./routes/payment.router");
 const cors = require("cors");
 const app = express();
 
@@ -68,7 +69,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/cart', cartRoutes);
 app.use('/auth', googleAuthRoutes);
-
+app.use('/payments',paymentRoutes);
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ 
