@@ -3,7 +3,7 @@ import { logoutUser } from '../redux/Thunk/AuthThunk';
 import { resetAuth } from '../redux/Slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import Login from '../Pages/Login';
-import Orders from '../Pages/Order';
+import OrderBtn from './OrderBtn';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const handleLogout = async () => {
               Go to Admin Dashboard
             </button>
           )}
-         <Orders />
+          <OrderBtn />
           <button
             onClick={handleLogout}
             className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-200 shadow-md"
