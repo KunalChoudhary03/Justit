@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { clearCart } from "../redux/Thunk/CartThunk";
+import { toast } from "react-toastify";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || "rzp_test_RlCTk3vTJVmcqV";
 
@@ -33,6 +35,8 @@ function PaymentButton({ amount }) {
               signature: response.razorpay_signature,
             });
             alert("Payment successful!");
+            toast.success(" Order has been successfully placed");
+            dispatch(clearCart());
           } catch (e) {
             console.error("Verification failed:", e);
             alert("Payment verification failed.");
