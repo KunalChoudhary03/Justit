@@ -4,7 +4,7 @@ import { fetchProducts } from "../redux/Thunk/ProductDataThunk";
 import AddToCartBtn from "../Components/AddToCartBtn";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import BannerSlider from "../Components/BannerSlider";
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,11 +63,7 @@ const Product = () => {
     <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen py-10 px-5">
       {/* Banner */}
       <div className="mb-8">
-        <img
-          className="w-full rounded-3xl shadow-lg h-40 sm:h-auto object-cover"
-          src="https://cdn.zeptonow.com/production/tr:w-1280,ar-2560-640,pr-true,f-auto,q-80/inventory/banner/257473f7-74bb-439a-915f-6c18d1545cd1.png"
-          alt="banner"
-        />
+        <BannerSlider />
       </div>
 
       {/* Category Filter */}
