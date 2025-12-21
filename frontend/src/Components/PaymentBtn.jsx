@@ -3,22 +3,24 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../redux/Thunk/CartThunk";
 import { toast } from "react-toastify";
+
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || "rzp_test_RlCTk3vTJVmcqV";
 
 function PaymentButton({ amount }) {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   const handlePayment = async () => {
     try {
       if (!window.Razorpay) {
-        alert("Payment SDK not loaded. Refresh the page.");
+        toast.error("Payment SDK not loaded. Refresh the page.");
         return;
       }
 
-      // FIX: correct routes
+     
       const { data: order } = await axios.post(
         `${BACKEND_URL}/payments/create-order`,
-        { amount } // pass cart total
+        { amount }
       );
 
       const options = {
@@ -35,12 +37,13 @@ const dispatch = useDispatch();
               razorpayPaymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
             });
-            alert("Payment successful!");
-            toast.success(" Order has been successfully placed");
+            
+          
+            toast.success(" Order has been successfully placed!");
             dispatch(clearCart());
           } catch (e) {
             console.error("Verification failed:", e);
-            alert("Payment verification failed.");
+            toast.error("Payment verification failed.");
           }
         },
         modal: {
@@ -48,24 +51,27 @@ const dispatch = useDispatch();
             console.warn("Payment modal closed by user");
           },
         },
-        theme: { color: "#3399cc" },
+        theme: { color: "#16b020ff" },
       };
 
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", function (resp) {
         console.error("Razorpay failed:", resp?.error);
-        alert(`Payment failed: ${resp?.error?.description || "Unknown error"}`);
+        toast.error(`Payment failed: ${resp?.error?.description || "Unknown error"}`);
       });
       rzp.open();
     } catch (error) {
       console.error(error);
-      alert("Payment failed");
+      toast.error("Failed to initiate payment");
     }
   };
 
   return (
-    <button onClick={handlePayment} style={{ padding: "10px 20px", background: "#3399cc", color: "#fff", border: "none", borderRadius: "5px" }}>
-      Pay Now
+    <button 
+      onClick={handlePayment} 
+      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+    >
+      Proceed to Pay ₹{Number(amount).toFixed(2)}
     </button>
   );
 }
