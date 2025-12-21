@@ -7,6 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || "rzp_test_RlCTk3vTJVmcqV";
 
 function PaymentButton({ amount }) {
+const dispatch = useDispatch();
   const handlePayment = async () => {
     try {
       if (!window.Razorpay) {
