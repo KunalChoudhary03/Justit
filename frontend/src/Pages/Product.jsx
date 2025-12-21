@@ -5,6 +5,7 @@ import AddToCartBtn from "../Components/AddToCartBtn";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import BannerSlider from "../Components/BannerSlider";
+
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,15 +44,18 @@ const Product = () => {
   };
 
   if (loading)
-    return <div className="text-center mt-10">
-  <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
-  <p className="mt-3 text-sm text-red-600 max-w-md mx-auto">
-    We are currently using a free server, so product loading may take up to
-    <span className="font-semibold"> 30 seconds</span>.
-    <br />
-    Thank you for your patience — please wait or refresh the page.
-  </p>
-</div>
+    return (
+      <div className="text-center mt-10 px-5">
+        <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
+        <p className="mt-3 text-sm text-red-600 max-w-md mx-auto">
+          We are currently using a free server, so product loading may take up to{" "}
+          <span className="font-semibold">30 seconds</span>.
+          <br />
+          Thank you for your patience — please wait or refresh the page.
+        </p>
+      </div>
+    );
+
   if (error)
     return (
       <h2 className="text-center text-xl font-semibold mt-10 text-red-600">
@@ -62,9 +66,7 @@ const Product = () => {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen py-10 px-5">
       {/* Banner */}
-      <div className="mb-8">
-        <BannerSlider />
-      </div>
+      <BannerSlider />
 
       {/* Category Filter */}
       <div className="flex flex-wrap justify-center gap-5 mb-10 bg-white shadow-md p-5 rounded-2xl border border-gray-100">
@@ -105,7 +107,7 @@ const Product = () => {
       )}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
         {currentItems.map((product) => (
           <motion.div
             key={product._id}
@@ -113,14 +115,19 @@ const Product = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.03 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden relative flex flex-col items-center cursor-pointer hover:shadow-2xl"
+            className="bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col cursor-pointer hover:shadow-2xl"
           >
-            <div onClick={() => navigate(`/details/${product._id}`)} className="w-full">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-56 object-cover"
-              />
+            <div
+              onClick={() => navigate(`/details/${product._id}`)}
+              className="w-full"
+            >
+              <div className="relative w-full h-56 sm:h-64 md:h-72 lg:h-80">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-contain p-2"
+                />
+              </div>
               <div className="absolute top-3 left-3 bg-yellow-400 text-xs font-bold px-3 py-1 rounded-full shadow">
                 {product.category}
               </div>
@@ -129,15 +136,15 @@ const Product = () => {
               </div>
             </div>
 
-            <div className="p-5 flex flex-col flex-1 w-full">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 truncate">
+            <div className="p-4 flex flex-col flex-1 w-full">
+              <h2 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 truncate">
                 {product.name}
               </h2>
-              <p className="text-gray-600 text-sm flex-1">
+              <p className="text-gray-600 text-xs sm:text-sm flex-1">
                 {product.description?.slice(0, 55)}...
               </p>
 
-              <div className="mt-4 flex justify-between items-center">
+              <div className="mt-3 flex justify-center">
                 <AddToCartBtn productId={product._id} quantity={1} />
               </div>
             </div>
