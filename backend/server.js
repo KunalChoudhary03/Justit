@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const app = require('./src/app.js'); 
 const connectDb = require('./src/db/db.js');
-const Payment = require('../models/Payment');
 
 connectDb();
 
