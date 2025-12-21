@@ -21,12 +21,18 @@ const BannerSlider = () => {
     <div className="mb-8 overflow-hidden rounded-2xl shadow-lg bg-gray-100">
       <div
         className="flex transition-transform duration-700 ease-in-out"
-        style={{ width: `${banners.length * 100}%`, transform: `translateX(-${current * (100 / banners.length)}%)` }}
+        style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {banners.map((img, index) => (
           <div
             key={index}
-            className="w-full flex items-center justify-center"
+            className="
+              min-w-full
+              flex
+              items-center
+              justify-center
+              bg-gray-100
+            "
           >
             <img
               src={img}
@@ -37,7 +43,7 @@ const BannerSlider = () => {
                 sm:h-56
                 md:h-72
                 lg:h-80
-                object-contain
+                object-cover
               "
             />
           </div>
