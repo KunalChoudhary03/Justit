@@ -7,37 +7,42 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+// ...existing code...
 async function createOrder(req, res) {
   try {
-    const product = await productModel.findOne();
+    // Use cart total if provided
+    const cartAmount = Number(req.body?.amount);
+    let amountInRupees = cartAmount && cartAmount > 0 ? cartAmount : null;
 
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+    if (!amountInRupees) {
+      const product = await productModel.findOne();
+      if (!product) return res.status(404).json({ message: "Product not found" });
+      amountInRupees = product.price.amount;
     }
 
+    const currency = 'INR'; 
+
     const options = {
-      amount: product.price.amount * 100,
-      currency: product.price.currency,
+      amount: Math.round(amountInRupees * 100), // paise
+      currency,
+      receipt: `receipt_${Date.now()}`
     };
 
     const order = await razorpay.orders.create(options);
 
     await paymentModel.create({
       orderId: order.id,
-      price: {
-        amount: product.price.amount,
-        currency: product.price.currency,
-      },
+      price: { amount: amountInRupees, currency },
       status: 'PENDING',
     });
 
     res.status(201).json(order);
-
   } catch (error) {
     console.error('Error creating order:', error);
     res.status(500).send('Error creating order');
   }
 }
+// ...existing code...
 
 async function verifyPayment(req, res) {
   const { razorpayOrderId, razorpayPaymentId, signature } = req.body;
