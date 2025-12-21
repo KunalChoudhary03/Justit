@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 const banners = [
-  "https://cdn.zeptonow.com/production/tr:w-1280,ar-2560-640,pr-true,f-auto,q-80/inventory/banner/257473f7-74bb-439a-915f-6c18d1545cd1.png",
-  "https://imgs.search.brave.com/8twfEGvhZtH7SMWijgfoZ3m8yJY_ew6xij0DcekSW2w/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/YnJhbmRmZXRjaC5p/by9iYWxhaml3YWZl/cnMuY29tL2ZhbGxi/YWNrL3RyYW5zcGFy/ZW50L3cvNjAwL2gv/MjAwL2Jhbm5lcj9j/PTFiZndzbUVIMjB6/ekVmU05UZWQ",
-  "https://imgs.search.brave.com/xEfJ3NbAQSmYWqUmu0IRh5fbeAjBAtGi9Cd8ymJx2JE/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/YmV5b25kc25hY2su/aW4vY2RuL3Nob3Av/ZmlsZXMvU29jaWFs/X0Jhbm5lcl81Lmpw/Zz92PTE3NDU5MjQ3/OTkmd2lkdGg9MTY0/MA",
+  "https://imgs.search.brave.com/_avl6ib_xI5KxGy1ylcUH2Q3YGubUDI0ctxRMtwz13k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wdXNo/cG9ubGluZS5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjUv/MTIvV2ludGVyLVNh/bGUtV2Vic2l0ZS1C/YW5uZXItNDk5LU9m/ZmVyLTI1LTIud2Vi/cA",
+  "https://imgs.search.brave.com/-96ofbMS48FB7_ArvgkmAVMXSpiZjEVd-Pzy2pn3eaI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/Ym9hdC1saWZlc3R5/bGUuY29tL2Nkbi9z/aG9wL2FydGljbGVz/L0Jhbm5lcl8yLnBu/Zz92PTE2NTMxMjA1/MjU",
+  "https://designatheme.net/wp-content/uploads/2022/03/beyond-snack1.jpg",
 ];
 
 const BannerSlider = () => {
