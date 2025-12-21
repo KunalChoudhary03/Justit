@@ -4,7 +4,7 @@ import Router from './Router/Router.jsx';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { setUser } from './redux/Slices/AuthSlice';
-
+import {Snowfall} from 'react-snowfall';
 const App = () => {
   const dispatch = useDispatch();
 
@@ -30,6 +30,17 @@ const App = () => {
 
   return (
     <div>
+      <Snowfall
+        color="white"
+        snowflakeCount={100}
+        style={{
+          position: 'fixed',
+          width: '100vw',
+          height: '100vh',
+          zIndex: 999,
+          pointerEvents: 'none',
+        }}
+      />
       <Header />
       <Router />
       <ToastContainer
