@@ -50,7 +50,7 @@ const handleLogout = async () => {
               Go to Admin Dashboard
             </button>
           )}
-          <OrderBtn />
+         <div className="space-y-4"> <OrderBtn /></div>
           <button
             onClick={handleLogout}
             className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-200 shadow-md"
