@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector, useNavigate } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
@@ -51,7 +51,6 @@ const Orders = () => {
       
       {orders.map((order) => (
         <div key={order._id} className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-200">
-          {/* Order Header */}
           <div className="flex justify-between items-start mb-4">
             <div>
               <p className="text-sm text-gray-500">Order ID: <span className="font-mono">{order.orderId}</span></p>
@@ -69,7 +68,6 @@ const Orders = () => {
             </span>
           </div>
 
-          {/* Order Items */}
           <div className="space-y-3 mb-4">
             <h3 className="font-semibold text-gray-700 mb-3">Items:</h3>
             {order.items && order.items.length > 0 ? (
@@ -95,7 +93,6 @@ const Orders = () => {
             )}
           </div>
 
-          {/* Order Total */}
           <div className="border-t pt-4 flex justify-between items-center bg-gray-50 p-3 rounded">
             <p className="font-semibold text-gray-700">Total Amount:</p>
             <p className="text-xl font-bold text-green-600">₹{order.totalAmount.toFixed(2)}</p>
