@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const banners = [
   "https://designatheme.net/wp-content/uploads/2022/03/beyond-snack1.jpg",
-  "https://imgs.search.brave.com/_avl6ib_xI5KxGy1ylcUH2Q3YGubUDI0ctxRMtwz13k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wdXNo/cG9ubGluZS5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjUv/MTIvV2ludGVyLVNh/bGUtV2Vic2l0ZS1C/YW5uZXItNDk5LU9m/ZmVyLTI1LTIud2Vi/cA",
-  "https://imgs.search.brave.com/-96ofbMS48FB7_ArvgkmAVMXSpiZjEVd-Pzy2pn3eaI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/Ym9hdC1saWZlc3R5/bGUuY29tL2Nkbi9z/aG9wL2FydGljbGVz/L0Jhbm5lcl8yLnBu/Zz92PTE2NTMxMjA1/MjU",
+  "https://pushponline.com/wp-content/uploads/2025/12/New-Year-Sale-Website-Banner-899-Offer-25-2.webp",
+  "https://www.bisleri.com/on/demandware.static/-/Sites/default/dwe8d1ed76/images/slot/bisleri/Shop-Page-Bisleri-Brand-Banner.jpg",
 ];
 
 const BannerSlider = () => {
@@ -18,7 +18,7 @@ const BannerSlider = () => {
   }, []);
 
   return (
-    <div className="mb-8 overflow-hidden rounded-xl shadow-lg bg-gray-100">
+    <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-8 overflow-hidden bg-gray-900">
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${current * 100}%)` }}
@@ -26,14 +26,27 @@ const BannerSlider = () => {
         {banners.map((img, index) => (
           <div
             key={index}
-            className="min-w-full flex items-center justify-center bg-gray-100"
+            className="min-w-full flex items-center justify-center bg-gray-900 h-96 md:h-[28rem] lg:h-[32rem]"
           >
             <img
               src={img}
               alt={`banner-${index}`}
-              className="w-full h-auto max-h-80 sm:max-h-96 md:max-h-[24rem] lg:max-h-[28rem] object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
+        ))}
+      </div>
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        {banners.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrent(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === current ? "bg-white w-8" : "bg-gray-400"
+            }`}
+          />
         ))}
       </div>
     </div>
