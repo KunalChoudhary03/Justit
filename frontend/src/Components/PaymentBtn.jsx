@@ -21,22 +21,37 @@ function PaymentButton({ amount }) {
       const options = {
         key: RAZORPAY_KEY,
         amount: order.amount,
-        currency: order.currency,
+        currency: order.currency || "INR",
         order_id: order.id,
         name: "Justit",
         description: "Cart Payment",
         handler: async function (response) {
-          await axios.post(`${BACKEND_URL}/payments/verify`, {
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            signature: response.razorpay_signature,
-          });
-          alert("Payment successful!");
+          try {
+            await axios.post(`${BACKEND_URL}/payments/verify`, {
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            });
+            alert("Payment successful!");
+          } catch (e) {
+            console.error("Verification failed:", e);
+            alert("Payment verification failed.");
+          }
         },
-        theme: { color: "#16b020ff" },
+        modal: {
+          ondismiss: function () {
+            console.warn("Payment modal closed by user");
+          },
+        },
+        theme: { color: "#3399cc" },
       };
 
-      new window.Razorpay(options).open();
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function (resp) {
+        console.error("Razorpay failed:", resp?.error);
+        alert(`Payment failed: ${resp?.error?.description || "Unknown error"}`);
+      });
+      rzp.open();
     } catch (error) {
       console.error(error);
       alert("Payment failed");
