@@ -16,7 +16,7 @@ import AddProduct from '../Pages/Admin/AddProduct'
 import EditProduct from '../Pages/Admin/EditProduct'
 import AdminLayout from '../Pages/Admin/AdminLayout'
 import Details from '../Pages/Details'
-
+import Orders from '../Pages/Order'
 const Router = () => {
   return (
      <Routes>
@@ -29,7 +29,8 @@ const Router = () => {
         <Route path="/profile" element={<Profile />}/>
         <Route path="/cart" element={<Cart />}/>
         <Route path="/details/:id" element={<Details />} />
-
+        <Route path="/orders" element={<Orders />} />
+      
         
         <Route path="/admin" element={<ProtectedRoute> <AdminLayout /> </ProtectedRoute> }/>
         <Route path="/admin/dashboard" element={<ProtectedRoute> <AdminDashboard /> </ProtectedRoute> }/>
