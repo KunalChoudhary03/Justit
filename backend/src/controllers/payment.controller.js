@@ -3,10 +3,15 @@ const Razorpay = require('razorpay');
 const paymentModel = require('../models/Payment');
 const crypto = require('crypto');
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+function getRazorpayClient() {
+  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  if (!keyId || !keySecret) {
+    console.error('Razorpay credentials missing: RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET');
+    return null;
+  }
+  return new Razorpay({ key_id: keyId, key_secret: keySecret });
+}
 
 
 async function createOrder(req, res) {
@@ -31,6 +36,10 @@ async function createOrder(req, res) {
       receipt: `receipt_${Date.now()}`
     };
 
+    const razorpay = getRazorpayClient();
+    if (!razorpay) {
+      return res.status(500).json({ message: 'Razorpay is not configured on the server' });
+    }
     const order = await razorpay.orders.create(options);
 
     await paymentModel.create({
