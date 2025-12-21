@@ -93,7 +93,7 @@ const Cart = () => {
           <div className="flex justify-between items-center mt-6 border-t pt-4">
             <p className="text-base md:text-lg font-semibold">Total: ₹{Number(totalPrice).toFixed(2)}</p>
           </div>
-          <PaymentButton product={cartItems} />
+          <PaymentButton amount={totalPrice} />
         </div>
       )}
     </div>

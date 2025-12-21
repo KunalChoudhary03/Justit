@@ -2,51 +2,57 @@ import React from "react";
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
-function PaymentButton() {
+
+function PaymentButton({ amount }) {
   const handlePayment = async () => {
     try {
-      // Step 1: Create order on backend
-      const { data: { order } } = await axios.post(`${BACKEND_URL}/payments/create-order`)
-      // Step 2: Razorpay options
+      // ✅ correct response handling
+      const { data: order } = await axios.post(
+        `${BACKEND_URL}/payment/create/orderId`,
+        { amount }
+      );
+
       const options = {
-        key: "rzp_test_RlCTk3vTJVmcqV", 
+        key: "rzp_test_RlCTk3vTJVmcqV",
         amount: order.amount,
         currency: order.currency,
-        name: "My Company",
-        description: "Test Transaction",
         order_id: order.id,
+        name: "My Company",
+        description: "Cart Payment",
+
         handler: async function (response) {
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
-          try {
-            await axios.post(`${BACKEND_URL}/payments/verify`, {
-              razorpayOrderId: razorpay_order_id,
-              razorpayPaymentId: razorpay_payment_id,
-              signature: razorpay_signature,
-            });
-            alert("Payment successful!");
-          } catch (err) {
-            alert("Payment verification failed!");
-          }
+          await axios.post(`${BACKEND_URL}/payment/verify`, {
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+          });
+
+          alert("Payment successful!");
         },
-        prefill: {
-          name: "Test User",
-          email: "test@example.com",
-          contact: "9999999999"
-        },
-        theme: {
-          color: "#16b020ff"
-        }
+
+        theme: { color: "#16b020ff" }
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-    } catch (err) {
-      console.error(err);
+
+    } catch (error) {
+      console.error(error);
+      alert("Payment failed");
     }
   };
 
   return (
-    <button onClick={handlePayment} style={{ padding: "10px 20px", background: "#3399cc", color: "#fff", border: "none", borderRadius: "5px" }}>
+    <button
+      onClick={handlePayment}
+      style={{
+        padding: "10px 20px",
+        background: "#3399cc",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+      }}
+    >
       Pay Now
     </button>
   );
