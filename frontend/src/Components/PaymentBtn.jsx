@@ -69,7 +69,7 @@ function PaymentButton({ amount }) {
   return (
     <button 
       onClick={handlePayment} 
-      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition"
     >
       Proceed to Pay ₹{Number(amount).toFixed(2)}
     </button>
