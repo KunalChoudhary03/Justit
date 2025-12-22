@@ -2,11 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, getItem } from "../redux/Thunk/CartThunk";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const AddToCartBtn = ({ productId, quantity = 1 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkLogin = () => {
     if (!token) {
@@ -20,8 +22,7 @@ const AddToCartBtn = ({ productId, quantity = 1 }) => {
     return true;
   };
 
-  const handleAddToCart = () => {
-
+  const handleAddToCart = async () => {
     if (!checkLogin()) return;
 
     if (!productId) {
@@ -29,24 +30,29 @@ const AddToCartBtn = ({ productId, quantity = 1 }) => {
       return;
     }
 
-    dispatch(addItem({ productId, quantity }))
-      .unwrap()
-      .then(() => {
-        dispatch(getItem());
-        toast.success("Product added to cart!");
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Failed to add product to cart");
-      });
+    setIsLoading(true);
+
+    try {
+      await dispatch(addItem({ productId, quantity })).unwrap();
+      await dispatch(getItem());
+      toast.success("Product added to cart! ✓");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add product to cart");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <button
       onClick={handleAddToCart}
-      className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition-colors"
+      disabled={isLoading}
+      className={`w-full ${
+        isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+      } text-white font-semibold py-2 rounded-lg transition-colors`}
     >
-      Add to Cart
+      {isLoading ? "Adding..." : "Add to Cart"}
     </button>
   );
 };
