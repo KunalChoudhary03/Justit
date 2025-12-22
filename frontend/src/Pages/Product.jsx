@@ -51,7 +51,7 @@ const Product = () => {
           We are currently using a free server, so product loading may take up to{" "}
           <span className="font-semibold">30 seconds</span>.
           <br />
-          Thank you for your patience — please wait or refresh the page.
+          Please wait or refresh the page.
         </p>
       </div>
     );
@@ -64,21 +64,23 @@ const Product = () => {
     );
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen py-10 px-5">
+    <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen py-8 px-4">
       {/* Banner */}
       <BannerSlider />
 
       {/* Category Filter */}
-      <div className="flex flex-wrap justify-center gap-5 mb-10 bg-white shadow-md p-5 rounded-2xl border border-gray-100">
+      <div className="flex flex-wrap justify-center gap-4 mb-8 bg-white shadow-sm p-4 rounded-xl border">
         <div className="flex items-center gap-2">
-          <label className="font-semibold text-gray-700">Category:</label>
+          <label className="text-sm font-semibold text-gray-700">
+            Category
+          </label>
           <select
             value={selectedCategory}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
               setCurrentPage(1);
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -93,7 +95,7 @@ const Product = () => {
             setSelectedCategory("All");
             setCurrentPage(1);
           }}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-all"
+          className="text-sm text-green-600 font-medium hover:underline"
         >
           Reset
         </button>
@@ -101,50 +103,59 @@ const Product = () => {
 
       {/* No Results */}
       {filteredItems.length === 0 && (
-        <p className="text-center text-gray-600 text-lg">
-          No products match your filters.
+        <p className="text-center text-gray-600 text-base">
+          No products found.
         </p>
       )}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {currentItems.map((product) => (
           <motion.div
             key={product._id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: 1.03 }}
-            className="bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col cursor-pointer hover:shadow-2xl"
+            transition={{ duration: 0.25 }}
+            className="bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden flex flex-col"
           >
+            {/* Image */}
             <div
               onClick={() => navigate(`/details/${product._id}`)}
-              className="w-full"
+              className="cursor-pointer"
             >
-             <div className="relative w-full h-44 sm:h-56 md:h-64 lg:h-72">
+              <div className="relative w-full h-40 sm:h-56 md:h-64 lg:h-72 flex items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-contain p-2"
+                  className="max-h-full object-contain p-2"
                 />
-              </div>
-              <div className="absolute top-3 left-3 bg-yellow-400 text-xs font-bold px-3 py-1 rounded-full shadow">
-                {product.category}
-              </div>
-              <div className="absolute top-3 right-3 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-                {product.price}
               </div>
             </div>
 
-            <div className="p-4 flex flex-col flex-1 w-full">
-              <h2 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 truncate">
+            {/* Content */}
+            <div className="p-3 flex flex-col flex-1">
+              {/* Category */}
+              <span className="text-[11px] text-gray-500 mb-1">
+                {product.category}
+              </span>
+
+              {/* Name */}
+              <h2 className="text-sm font-semibold text-gray-800 leading-tight line-clamp-2">
                 {product.name}
               </h2>
-              <p className="text-gray-600 text-xs sm:text-sm flex-1">
-                {product.description?.slice(0, 55)}...
+
+              {/* Price */}
+              <p className="text-green-700 font-bold text-sm mt-1">
+                ₹{product.price}
               </p>
 
-              <div className="mt-3 flex justify-center">
+              {/* Description */}
+              <p className="text-gray-500 text-xs mt-1 line-clamp-2 flex-1">
+                {product.description}
+              </p>
+
+              {/* Add to Cart */}
+              <div className="mt-2">
                 <AddToCartBtn productId={product._id} quantity={1} />
               </div>
             </div>
@@ -154,14 +165,14 @@ const Product = () => {
 
       {/* Pagination */}
       {filteredItems.length > itemsPerPage && (
-        <div className="flex justify-center items-center mt-12 gap-3 flex-wrap">
+        <div className="flex justify-center items-center mt-10 gap-2 flex-wrap">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-lg font-medium ${
+            className={`px-3 py-1 rounded-md text-sm ${
               currentPage === 1
-                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                : "bg-green-600 text-white hover:bg-green-700"
+                ? "bg-gray-200 text-gray-500"
+                : "bg-green-600 text-white"
             }`}
           >
             Prev
@@ -171,10 +182,10 @@ const Product = () => {
             <button
               key={i + 1}
               onClick={() => handlePageChange(i + 1)}
-              className={`px-3 py-1 rounded-lg font-medium ${
+              className={`px-3 py-1 rounded-md text-sm ${
                 currentPage === i + 1
                   ? "bg-green-600 text-white"
-                  : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+                  : "bg-white border"
               }`}
             >
               {i + 1}
@@ -184,10 +195,10 @@ const Product = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-lg font-medium ${
+            className={`px-3 py-1 rounded-md text-sm ${
               currentPage === totalPages
-                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                : "bg-green-600 text-white hover:bg-green-700"
+                ? "bg-gray-200 text-gray-500"
+                : "bg-green-600 text-white"
             }`}
           >
             Next
@@ -199,4 +210,3 @@ const Product = () => {
 };
 
 export default Product;
-
