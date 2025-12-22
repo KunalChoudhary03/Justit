@@ -20,9 +20,9 @@ const Header = () => {
         {/* Desktop nav */}
         <ul className="hidden md:flex gap-8 text-lg font-semibold">
           <li><Link to="/" className="hover:text-gray-200 transition-colors">Home</Link></li>
-          <li><Link to="/about" className="hover:text-gray-200 transition-colors">About</Link></li>
-          <li><Link to="/contact" className="hover:text-gray-200 transition-colors">Contact</Link></li>
           <li><Link to="/service" className="hover:text-gray-200 transition-colors">Service</Link></li>
+          <li><Link to="/contact" className="hover:text-gray-200 transition-colors">Contact</Link></li>
+          <li><Link to="/about" className="hover:text-gray-200 transition-colors">About</Link></li>
         </ul>
 
         {/* Desktop search */}

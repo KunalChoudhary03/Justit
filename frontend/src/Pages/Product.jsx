@@ -80,7 +80,7 @@ const Product = () => {
               setSelectedCategory(e.target.value);
               setCurrentPage(1);
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -95,7 +95,7 @@ const Product = () => {
             setSelectedCategory("All");
             setCurrentPage(1);
           }}
-          className="text-sm text-green-600 font-medium hover:underline"
+          className="text-sm text-blue-900 font-medium hover:underline"
         >
           Reset
         </button>
@@ -145,7 +145,7 @@ const Product = () => {
               </h2>
 
               {/* Price */}
-              <p className="text-green-700 font-bold text-sm mt-1">
+              <p className="text-blue-700 font-bold text-sm mt-1">
                 {product.price}
               </p>
 
@@ -172,7 +172,7 @@ const Product = () => {
             className={`px-3 py-1 rounded-md text-sm ${
               currentPage === 1
                 ? "bg-gray-200 text-gray-500"
-                : "bg-green-600 text-white"
+                : "bg-blue-900 text-white"
             }`}
           >
             Prev
@@ -184,7 +184,7 @@ const Product = () => {
               onClick={() => handlePageChange(i + 1)}
               className={`px-3 py-1 rounded-md text-sm ${
                 currentPage === i + 1
-                  ? "bg-green-600 text-white"
+                  ? "bg-blue-900 text-white"
                   : "bg-white border"
               }`}
             >
@@ -198,7 +198,7 @@ const Product = () => {
             className={`px-3 py-1 rounded-md text-sm ${
               currentPage === totalPages
                 ? "bg-gray-200 text-gray-500"
-                : "bg-green-600 text-white"
+                : "bg-blue-900 text-white"
             }`}
           >
             Next
