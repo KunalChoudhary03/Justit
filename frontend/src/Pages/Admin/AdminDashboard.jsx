@@ -27,7 +27,7 @@ const AdminDashboard = () => {
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-4">
-          <button onClick={()=> navigate('/admin/addproducts')} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+          <button onClick={()=> navigate('/admin/addproduct')} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
             Add New Product
           </button>
           <button onClick={()=> navigate('/orders')} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">

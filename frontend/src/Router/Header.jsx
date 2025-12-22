@@ -68,9 +68,10 @@ const Header = () => {
           </div>
           <ul className="flex flex-col gap-2 text-base font-medium">
             <li><Link onClick={() => setOpen(false)} to="/" className="block px-2 py-2 rounded hover:bg-white/10">Home</Link></li>
-            <li><Link onClick={() => setOpen(false)} to="/about" className="block px-2 py-2 rounded hover:bg-white/10">About</Link></li>
-            <li><Link onClick={() => setOpen(false)} to="/contact" className="block px-2 py-2 rounded hover:bg-white/10">Contact</Link></li>
             <li><Link onClick={() => setOpen(false)} to="/service" className="block px-2 py-2 rounded hover:bg-white/10">Service</Link></li>
+            <li><Link onClick={() => setOpen(false)} to="/contact" className="block px-2 py-2 rounded hover:bg-white/10">Contact</Link></li>
+            <li><Link onClick={() => setOpen(false)} to="/about" className="block px-2 py-2 rounded hover:bg-white/10">About</Link></li>
+          
           </ul>
         </div>
       )}

@@ -49,7 +49,7 @@ const AddToCartBtn = ({ productId, quantity = 1 }) => {
       onClick={handleAddToCart}
       disabled={isLoading}
       className={`w-full ${
-        isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+        isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-900 hover:bg-blue-700"
       } text-white font-semibold py-2 rounded-lg transition-colors`}
     >
       {isLoading ? "Adding..." : "Add to Cart"}

@@ -14,7 +14,7 @@ const AddToCart = () => {
   return (
     <div className="flex items-center space-x-2">
       <div
-        onClick={() => navigate("/cart")}  // 🟢 Just navigate to cart page
+        onClick={() => navigate("/cart")}  
         className="relative cursor-pointer flex flex-col items-center group"
       >
         {/* Cart icon */}
