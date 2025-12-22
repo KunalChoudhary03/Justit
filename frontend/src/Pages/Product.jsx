@@ -102,18 +102,18 @@ const Product = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow-sm p-4 rounded-xl border border-gray-200 mb-8">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+      <div className="bg-gradient-to-r from-white to-gray-50 shadow-md p-5 rounded-2xl border border-gray-100 mb-8 backdrop-blur-sm">
+        <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
             {/* Category Filter */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-                Category:
+            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                📁 Category
               </label>
               <select
                 value={selectedCategory}
                 onChange={(e) => handleCategoryChange(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                className="border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-medium bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition hover:border-gray-300"
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -124,19 +124,19 @@ const Product = () => {
             </div>
 
             {/* Sort Filter */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-                Sort by:
+            <div className="flex flex-col gap-2 flex-1 sm:flex-none">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                ⬍ Sort by
               </label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                className="border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-medium bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition hover:border-gray-300"
               >
-                <option value="newest">Newest</option>
-                <option value="name">Name (A-Z)</option>
-                <option value="price-low">Price (Low to High)</option>
-                <option value="price-high">Price (High to Low)</option>
+                <option value="newest">✨ Newest First</option>
+                <option value="name">🔤 Name (A-Z)</option>
+                <option value="price-low">💰 Price (Low to High)</option>
+                <option value="price-high">💎 Price (High to Low)</option>
               </select>
             </div>
           </div>
@@ -144,16 +144,16 @@ const Product = () => {
           {/* Reset Button */}
           <button
             onClick={handleReset}
-            className="text-sm text-white bg-green-600 hover:bg-green-700 font-medium px-4 py-2 rounded-lg transition whitespace-nowrap"
+            className="text-sm text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 font-bold px-6 py-2.5 rounded-xl transition shadow-md hover:shadow-lg whitespace-nowrap transform hover:scale-105"
           >
-            Reset Filters
+            🔄 Reset
           </button>
         </div>
 
         {/* Results Count */}
-        <p className="text-xs text-gray-600 mt-3">
-          Showing <span className="font-semibold">{currentItems.length}</span> of{" "}
-          <span className="font-semibold">{filteredItems.length}</span> products
+        <p className="text-sm text-gray-600 mt-4 font-medium">
+          📦 <span className="font-bold text-green-600">{currentItems.length}</span> of{" "}
+          <span className="font-bold text-green-600">{filteredItems.length}</span> products
         </p>
       </div>
 
@@ -169,53 +169,56 @@ const Product = () => {
       )}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
         {currentItems.map((product, idx) => (
           <motion.div
             key={product._id}
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: idx * 0.05 }}
-            className="bg-white rounded-xl shadow-sm hover:shadow-lg overflow-hidden flex flex-col transition-shadow"
+            className="bg-white rounded-2xl shadow-sm hover:shadow-xl overflow-hidden flex flex-col transition-all duration-300 border border-gray-100 hover:border-green-200"
           >
             {/* Image */}
             <div
               onClick={() => navigate(`/details/${product._id}`)}
               className="cursor-pointer relative group"
             >
-              <div className="relative w-full h-40 sm:h-56 md:h-64 lg:h-72 flex items-center justify-center bg-gray-50">
+              <div className="relative w-full h-40 sm:h-56 md:h-64 lg:h-72 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="max-h-full object-contain p-2 group-hover:scale-105 transition-transform"
+                  className="max-h-full object-contain p-3 group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => (e.target.src = "/placeholder.png")}
                 />
               </div>
               {/* Category Badge */}
-              <span className="absolute top-2 left-2 text-[10px] sm:text-xs bg-emerald-50 text-emerald-700 font-semibold px-2 py-1 rounded-full border border-emerald-100">
+              <span className="absolute top-3 left-3 text-[10px] sm:text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1.5 rounded-full border border-emerald-200 shadow-sm">
                 {product.category}
               </span>
             </div>
 
             {/* Content */}
-            <div className="p-3 flex flex-col flex-1">
+            <div className="p-4 flex flex-col flex-1">
               {/* Name */}
-              <h2 className="text-sm font-semibold text-gray-800 leading-tight line-clamp-2 hover:text-green-600 cursor-pointer" onClick={() => navigate(`/details/${product._id}`)}>
+              <h2 
+                className="text-sm sm:text-base font-bold text-gray-900 leading-tight line-clamp-2 hover:text-green-600 cursor-pointer transition mb-2" 
+                onClick={() => navigate(`/details/${product._id}`)}
+              >
                 {product.name}
               </h2>
 
               {/* Price */}
-              <p className="text-green-700 font-bold text-base mt-2">
-                ₹{parseFloat(product.price).toFixed(2)}
+              <p className="text-lg sm:text-xl font-black text-green-600 mb-2">
+                ₹{product.price ? parseFloat(product.price).toFixed(2) : "N/A"}
               </p>
 
               {/* Description */}
-              <p className="text-gray-500 text-xs mt-1 line-clamp-2 flex-1">
+              <p className="text-gray-500 text-xs sm:text-sm line-clamp-2 flex-1 mb-3">
                 {product.description}
               </p>
 
               {/* Add to Cart */}
-              <div className="mt-3">
+              <div className="mt-auto">
                 <AddToCartBtn productId={product._id} quantity={1} />
               </div>
             </div>
