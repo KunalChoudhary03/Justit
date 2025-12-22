@@ -51,7 +51,7 @@ const Cart = () => {
                   <div>
                     <h2 className="font-semibold text-sm sm:text-base">{product.name}</h2>
                    <p className="text-gray-600 text-sm">
-                      ₹{product?.price?.amount ?? product.price}
+                      {product?.price?.amount ?? product.price}
                      </p>
                   </div>
                 </div>
