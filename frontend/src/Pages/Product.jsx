@@ -46,43 +46,39 @@ const Product = () => {
   if (loading)
     return (
       <div className="text-center mt-10 px-5">
-        <h2 className="text-lg font-semibold text-gray-800">Loading products…</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
         <p className="mt-3 text-sm text-red-600 max-w-md mx-auto">
-          We are currently using a free server, so loading may take up to{" "}
+          We are currently using a free server, so product loading may take up to{" "}
           <span className="font-semibold">30 seconds</span>.
           <br />
-          Please wait or refresh the page.
+          Thank you for your patience — please wait or refresh the page.
         </p>
       </div>
     );
 
   if (error)
     return (
-      <h2 className="text-center text-lg font-semibold mt-10 text-red-600">
+      <h2 className="text-center text-xl font-semibold mt-10 text-red-600">
         Error: {error}
       </h2>
     );
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-12 px-4 sm:px-6">
-      {/* Banner (reduced spacing) */}
-      <div className="mb-6">
-        <BannerSlider />
-      </div>
+    <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen py-10 px-5">
+      {/* Banner */}
+      <BannerSlider />
 
-      {/* Category Filter (kept dropdown) */}
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-6 bg-white shadow-sm p-4 rounded-xl border">
+      {/* Category Filter */}
+      <div className="flex flex-wrap justify-center gap-5 mb-10 bg-white shadow-md p-5 rounded-2xl border border-gray-100">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-gray-700">
-            Category
-          </label>
+          <label className="font-semibold text-gray-700">Category:</label>
           <select
             value={selectedCategory}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
               setCurrentPage(1);
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -97,7 +93,7 @@ const Product = () => {
             setSelectedCategory("All");
             setCurrentPage(1);
           }}
-          className="text-sm text-green-600 font-medium hover:underline"
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-all"
         >
           Reset
         </button>
@@ -105,55 +101,50 @@ const Product = () => {
 
       {/* No Results */}
       {filteredItems.length === 0 && (
-        <p className="text-center text-gray-600 text-base">
-          No products found.
+        <p className="text-center text-gray-600 text-lg">
+          No products match your filters.
         </p>
       )}
 
-      {/* Product Grid (mobile-first) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* Product Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
         {currentItems.map((product) => (
           <motion.div
             key={product._id}
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-            className="bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden flex flex-col"
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.03 }}
+            className="bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col cursor-pointer hover:shadow-2xl"
           >
-            {/* Image */}
             <div
               onClick={() => navigate(`/details/${product._id}`)}
-              className="relative cursor-pointer"
+              className="w-full"
             >
-              <div className="w-full h-40 sm:h-44 flex items-center justify-center">
+             <div className="relative w-full h-44 sm:h-56 md:h-64 lg:h-72">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="max-h-full object-contain p-2"
+                  className="w-full h-full object-contain p-2"
                 />
               </div>
-
-              {/* Category badge */}
-              <span className="absolute top-2 left-2 bg-gray-100 text-gray-700 text-[10px] px-2 py-1 rounded-full">
+              <div className="absolute top-3 left-3 bg-yellow-400 text-xs font-bold px-3 py-1 rounded-full shadow">
                 {product.category}
-              </span>
+              </div>
+              <div className="absolute top-3 right-3 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                {product.price}
+              </div>
             </div>
 
-            {/* Content */}
-            <div className="p-3 flex flex-col flex-1">
-              <h2 className="text-sm font-semibold text-gray-800 line-clamp-1">
+            <div className="p-4 flex flex-col flex-1 w-full">
+              <h2 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 truncate">
                 {product.name}
               </h2>
-
-              <p className="text-green-700 font-semibold text-sm mt-1">
-                ₹{product.price}
+              <p className="text-gray-600 text-xs sm:text-sm flex-1">
+                {product.description?.slice(0, 55)}...
               </p>
 
-              <p className="text-gray-500 text-xs mt-1 line-clamp-2 flex-1">
-                {product.description}
-              </p>
-
-              <div className="mt-3">
+              <div className="mt-3 flex justify-center">
                 <AddToCartBtn productId={product._id} quantity={1} />
               </div>
             </div>
@@ -163,14 +154,14 @@ const Product = () => {
 
       {/* Pagination */}
       {filteredItems.length > itemsPerPage && (
-        <div className="flex justify-center items-center mt-10 gap-2 flex-wrap">
+        <div className="flex justify-center items-center mt-12 gap-3 flex-wrap">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-3 py-1 rounded-md text-sm ${
+            className={`px-4 py-2 rounded-lg font-medium ${
               currentPage === 1
-                ? "bg-gray-200 text-gray-500"
-                : "bg-green-600 text-white"
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-green-600 text-white hover:bg-green-700"
             }`}
           >
             Prev
@@ -180,10 +171,10 @@ const Product = () => {
             <button
               key={i + 1}
               onClick={() => handlePageChange(i + 1)}
-              className={`px-3 py-1 rounded-md text-sm ${
+              className={`px-3 py-1 rounded-lg font-medium ${
                 currentPage === i + 1
                   ? "bg-green-600 text-white"
-                  : "bg-white border"
+                  : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
               }`}
             >
               {i + 1}
@@ -193,10 +184,10 @@ const Product = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-3 py-1 rounded-md text-sm ${
+            className={`px-4 py-2 rounded-lg font-medium ${
               currentPage === totalPages
-                ? "bg-gray-200 text-gray-500"
-                : "bg-green-600 text-white"
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-green-600 text-white hover:bg-green-700"
             }`}
           >
             Next
@@ -208,3 +199,4 @@ const Product = () => {
 };
 
 export default Product;
+
