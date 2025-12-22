@@ -37,20 +37,6 @@ const BannerSlider = () => {
         ))}
       </div>
 
-      {/* Dots Indicator */}
-      <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1.5 sm:gap-2">
-        {banners.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrent(index)}
-            className={`rounded-full transition-all duration-300 ${
-              index === current 
-                ? "bg-white w-6 sm:w-8 h-2 sm:h-3" 
-                : "bg-gray-400 w-2 sm:w-3 h-2 sm:h-3 hover:bg-gray-300"
-            }`}
-          />
-        ))}
-      </div>
 
       {/* Left/Right Navigation Arrows (Optional) */}
       <button
