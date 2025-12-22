@@ -95,7 +95,7 @@ const Product = () => {
             setSelectedCategory("All");
             setCurrentPage(1);
           }}
-          className="text-sm text-blue-900 font-medium hover:underline"
+          className="text-sm text-gray-800 font-medium hover:underline"
         >
           Reset
         </button>
@@ -145,7 +145,7 @@ const Product = () => {
               </h2>
 
               {/* Price */}
-              <p className="text-blue-700 font-bold text-sm mt-1">
+              <p className="text-green-500 font-bold text-sm mt-1">
                 {product.price}
               </p>
 
@@ -172,7 +172,7 @@ const Product = () => {
             className={`px-3 py-1 rounded-md text-sm ${
               currentPage === 1
                 ? "bg-gray-200 text-gray-500"
-                : "bg-blue-900 text-white"
+                : "bg-gray-800 text-white"
             }`}
           >
             Prev
@@ -198,7 +198,7 @@ const Product = () => {
             className={`px-3 py-1 rounded-md text-sm ${
               currentPage === totalPages
                 ? "bg-gray-200 text-gray-500"
-                : "bg-blue-900 text-white"
+                : "bg-gray-800 text-white"
             }`}
           >
             Next
