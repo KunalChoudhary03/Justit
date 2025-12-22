@@ -30,12 +30,10 @@ const AdminDashboard = () => {
           <button onClick={()=> navigate('/admin/addproducts')} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
             Add New Product
           </button>
-          <button onClick={()=> navigate('/admin/products')} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+          <button onClick={()=> navigate('/orders')} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
             View All Orders
           </button>
-          <button onClick={()=> navigate('/admin/users')} className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg">
-            Manage Users
-          </button>
+         
         </div>
       </div>
     </div>
