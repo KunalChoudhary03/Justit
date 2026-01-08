@@ -4,7 +4,7 @@ const connectDb = require('./src/db/db.js');
 const axios = require('axios');
 
 const PORT = process.env.PORT || 3000;
-const url = 'https://balaji-traders-8f7n.onrender.com';
+const url = 'https://justit-yyzo.onrender.com/';
 const interval = 30000;
 
 function reloadWebsite() {
