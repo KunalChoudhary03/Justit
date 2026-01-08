@@ -28,6 +28,7 @@ const BannerSlider = () => {
             key={index}
             className="min-w-full flex items-center justify-center bg-gray-900 h-48 sm:h-64 md:h-80 lg:h-96"
           >
+           
             <img
               src={img}
               alt={`banner-${index}`}
